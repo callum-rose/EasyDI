@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>EasyDI.Godot.Core</id>
+    <version>1.0.6</version>
+    <title>EasyDI.Godot.Core</title>
+    <authors>Alex Williams</authors>
+    <description>Contains the core classes to get EasyDI LifetimeScopes working in Godot</description>
+    <repository type="git" commit="af18ead42eee3bc8621e6de45f09d94c5478040a" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="EasyDI.LifecycleHooks" version="1.0.4" exclude="Build,Analyzers" />
+        <dependency id="GodotSharp" version="4.5.1" exclude="Build,Analyzers" />
+        <dependency id="JetBrains.Annotations" version="2025.2.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/bin/Debug/net8.0/EasyDI.Godot.Core.dll" target="lib/net8.0/EasyDI.Godot.Core.dll" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/ScriptTemplates/ApplicationLifetimeScope.cs.txt" target="ScriptTemplates/ApplicationLifetimeScope.cs.txt" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/ScriptTemplates/EasyDISettings.cs.txt" target="ScriptTemplates/EasyDISettings.cs.txt" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/ScriptTemplates/GameLifetimeScope.cs.txt" target="ScriptTemplates/GameLifetimeScope.cs.txt" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/ScriptTemplates/SceneLifetimeScope.cs.txt" target="ScriptTemplates/SceneLifetimeScope.cs.txt" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Godot.Core/ScriptTemplates/SessionLifetimeScope.cs.txt" target="ScriptTemplates/SessionLifetimeScope.cs.txt" />
+  </files>
+</package>

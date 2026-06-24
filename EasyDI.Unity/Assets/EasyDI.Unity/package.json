@@ -1,0 +1,9 @@
+{
+  "name": "com.easydi.easydi-unity",
+  "version": "1.0.0",
+  "displayName": "EasyDI Unity",
+  "description": "A Unity extensions for EasyDI a minimal and portable dependency injection framework for C#.",
+  "author": {
+    "name": "Callum Rose"
+  }
+}

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>EasyDI.Configuration</id>
+    <version>1.1.0</version>
+    <title>EasyDI.Configuration</title>
+    <authors>Callum Rose</authors>
+    <description>Configure Microsoft.Extensions.Options from Microsoft.Extensions.Configuration with EasyDI</description>
+    <tags>di, easydi, easydi, configuration, options</tags>
+    <repository type="git" commit="af18ead42eee3bc8621e6de45f09d94c5478040a" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="EasyDI" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Binder" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.DataAnnotations" version="9.0.10" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="EasyDI" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Binder" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="9.0.10" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.DataAnnotations" version="9.0.10" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/net8.0/EasyDI.Configuration.dll" target="lib/net8.0/EasyDI.Configuration.dll" />
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.Configuration.dll" target="lib/netstandard2.1/EasyDI.Configuration.dll" />
+  </files>
+</package>

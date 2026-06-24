@@ -238,8 +238,6 @@ Assert.AreEqual(2, childServices.Count());
 
 ### Open Generics
 
-Open generic types can be registered and a closed version of that type can be resolved.
-
 ```csharp
 public interface ILogger<T> { }
 public class Logger<T> : ILogger<T> { }
@@ -251,12 +249,7 @@ var logger = resolver.Resolve<Logger<ServiceA>>();
 ```
 ```csharp 
 registry.RegisterSingleton(typeof(Logger<>)).As(typeof(ILogger<>));
-// ...
-var logger = resolver.Resolve<ILogger<ServiceA>>();
-```
-```csharp
-registry.RegisterSingleton(typeof(Logger<>), (resolver, type) => LoggerFactory.Create(type)).As(typeof(ILogger<>));
-// ...
+// ..
 var logger = resolver.Resolve<ILogger<ServiceA>>();
 ```
 

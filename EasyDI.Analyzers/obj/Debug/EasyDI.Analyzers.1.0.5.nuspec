@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>EasyDI.Analyzers</id>
+    <version>1.0.5</version>
+    <authors>EasyDI.Analyzers</authors>
+    <developmentDependency>true</developmentDependency>
+    <description>Package Description</description>
+    <repository type="git" commit="af18ead42eee3bc8621e6de45f09d94c5478040a" />
+  </metadata>
+  <files>
+    <file src="/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/bin/Debug/netstandard2.0/EasyDI.Analyzers.dll" target="analyzers/dotnet/cs/EasyDI.Analyzers.dll" />
+  </files>
+</package>
