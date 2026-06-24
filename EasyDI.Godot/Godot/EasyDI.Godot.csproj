@@ -17,4 +17,7 @@
   <ItemGroup>
     <Folder Include=".godot\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EasyDI.Godot.Core\EasyDI.Godot.Core.csproj" />
+  </ItemGroup>
 </Project>
