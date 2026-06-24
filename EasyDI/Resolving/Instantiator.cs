@@ -18,9 +18,9 @@ internal static class Instantiator
 
 		var arguments = constructorInfo.GetParameters()
 			.Select(p => p.ParameterType)
-			.Select(t => dependencyChain.Contains(t) ?
-				throw new CircularDependencyException([..dependencyChain, t]) :
-				resolver.Resolve(ResolutionQuery.Create(t) with { DependencyChain = [..dependencyChain, t] }))
+			.Select(t => !dependencyChain.Contains(t) ?
+				resolver.Resolve(ResolutionQuery.Create(t) with { DependencyChain = [..dependencyChain, t] }) :
+				throw new CircularDependencyException([..dependencyChain, t]))
 			.ToArray();
 
 		instance = constructorInfo.Invoke(arguments);
