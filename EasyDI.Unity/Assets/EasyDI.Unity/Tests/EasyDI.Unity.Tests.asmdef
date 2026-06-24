@@ -1,0 +1,28 @@
+{
+    "name": "EasyDI.Unity.Tests",
+    "rootNamespace": "EasyDI.Unity",
+    "references": [
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:b0f71032965c4f7fb65519ddcc595b82"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WSA",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "EasyDI.dll",
+        "EasyDI.LifecycleHooks.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

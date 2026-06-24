@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>EasyDI.Configuration</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>EasyDI.Configuration</Title>
+        <Authors>Callum Rose</Authors>
+        <Description>Configure Microsoft.Extensions.Options from Microsoft.Extensions.Configuration with EasyDI</Description>
+        <PackageTags>di, easydi, easydi, configuration, options</PackageTags>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+        <Version>1.1.0</Version>
+        <RootNamespace>EasyDI.Configuration</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EasyDI.Analyzers\EasyDI.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\EasyDI\EasyDI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.10" />
+    </ItemGroup>
+
+</Project>

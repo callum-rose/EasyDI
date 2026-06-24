@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bugtdrp884c24"]
+
+[ext_resource type="Script" uid="uid://b7wl3gtyp87y1" path="res://addons/EasyDI.Godot/Runtime/LifetimeScopes/SessionLifetimeScope.cs" id="1_f4flv"]
+[ext_resource type="Script" uid="uid://bppy7uv42cuo5" path="res://Example/Scripts/SessionInstaller.cs" id="2_hkv0b"]
+
+[node name="SessionScope" type="Node" node_paths=PackedStringArray("installer")]
+script = ExtResource("1_f4flv")
+installer = NodePath("SessionInstaller")
+
+[node name="SessionInstaller" type="Node" parent="."]
+script = ExtResource("2_hkv0b")
