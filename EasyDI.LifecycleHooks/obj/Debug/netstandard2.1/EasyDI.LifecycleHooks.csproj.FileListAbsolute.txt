@@ -1,0 +1,14 @@
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/netstandard2.1/EasyDI.LifecycleHooks.deps.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/netstandard2.1/EasyDI.LifecycleHooks.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/netstandard2.1/EasyDI.LifecycleHooks.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/netstandard2.1/EasyDI.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/netstandard2.1/EasyDI.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.csproj.AssemblyReference.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.GeneratedMSBuildEditorConfig.editorconfig
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.AssemblyInfoInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.AssemblyInfo.cs
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.csproj.CoreCompileInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.sourcelink.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.L.D3FF56FC.Up2Date
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/netstandard2.1/EasyDI.LifecycleHooks.pdb

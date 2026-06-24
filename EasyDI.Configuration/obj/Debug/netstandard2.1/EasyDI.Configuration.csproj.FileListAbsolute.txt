@@ -1,0 +1,14 @@
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.Configuration.deps.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.Configuration.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.Configuration.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/bin/Debug/netstandard2.1/EasyDI.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.csproj.AssemblyReference.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.GeneratedMSBuildEditorConfig.editorconfig
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.AssemblyInfoInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.AssemblyInfo.cs
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.csproj.CoreCompileInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.sourcelink.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.C.D91615F1.Up2Date
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/obj/Debug/netstandard2.1/EasyDI.Configuration.pdb

@@ -1,0 +1,40 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "EasyDI.LifecycleHooks/1.0.0": {
+        "dependencies": {
+          "EasyDI": "1.1.0"
+        },
+        "runtime": {
+          "EasyDI.LifecycleHooks.dll": {}
+        }
+      },
+      "EasyDI/1.1.0": {
+        "runtime": {
+          "EasyDI.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EasyDI.LifecycleHooks/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasyDI/1.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

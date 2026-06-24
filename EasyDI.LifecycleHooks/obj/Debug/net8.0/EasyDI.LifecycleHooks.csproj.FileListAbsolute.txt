@@ -1,0 +1,16 @@
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/net8.0/EasyDI.LifecycleHooks.deps.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/net8.0/EasyDI.LifecycleHooks.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/net8.0/EasyDI.LifecycleHooks.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/net8.0/EasyDI.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/bin/Debug/net8.0/EasyDI.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.csproj.AssemblyReference.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.GeneratedMSBuildEditorConfig.editorconfig
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.AssemblyInfoInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.AssemblyInfo.cs
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.csproj.CoreCompileInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.sourcelink.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.L.D3FF56FC.Up2Date
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/refint/EasyDI.LifecycleHooks.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/EasyDI.LifecycleHooks.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.LifecycleHooks/obj/Debug/net8.0/ref/EasyDI.LifecycleHooks.dll

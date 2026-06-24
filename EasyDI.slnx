@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="EasyDI.Analyzers\EasyDI.Analyzers.csproj" Type="Classic C#" />
+  <Project Path="EasyDI.Godot.Core\EasyDI.Godot.Core.csproj" Type="Classic C#" />
+  <Project Path="EasyDI.Configuration\EasyDI.Configuration.csproj" Type="Classic C#" />
+  <Project Path="EasyDI.LifecycleHooks\EasyDI.LifecycleHooks.csproj" Type="Classic C#" />
+  <Project Path="EasyDI.Tests\EasyDI.Tests.csproj" Type="Classic C#" />
+  <Project Path="EasyDI\EasyDI.csproj" Type="Classic C#" />
+</Solution>

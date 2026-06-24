@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = EasyDI
+build_property.ProjectDir = /Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

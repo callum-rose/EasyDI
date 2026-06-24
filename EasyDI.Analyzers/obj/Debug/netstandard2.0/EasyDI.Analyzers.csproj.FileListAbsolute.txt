@@ -1,0 +1,11 @@
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/bin/Debug/netstandard2.0/EasyDI.Analyzers.deps.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/bin/Debug/netstandard2.0/EasyDI.Analyzers.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/bin/Debug/netstandard2.0/EasyDI.Analyzers.pdb
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.csproj.AssemblyReference.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.GeneratedMSBuildEditorConfig.editorconfig
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.AssemblyInfoInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.AssemblyInfo.cs
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.csproj.CoreCompileInputs.cache
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.sourcelink.json
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.dll
+/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Analyzers/obj/Debug/netstandard2.0/EasyDI.Analyzers.pdb

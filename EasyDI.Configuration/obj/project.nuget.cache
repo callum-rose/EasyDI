@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "dgSpecHash": "/uBmKJ0rQLo=",
+  "success": true,
+  "projectFilePath": "/Users/callumrose/Developer/EasyDI/.claude/worktrees/sweet-mendel-2c02b4/EasyDI.Configuration/EasyDI.Configuration.csproj",
+  "expectedPackageFiles": [
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.10/microsoft.extensions.configuration.abstractions.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.configuration.binder/9.0.10/microsoft.extensions.configuration.binder.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.10/microsoft.extensions.dependencyinjection.abstractions.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.options/9.0.10/microsoft.extensions.options.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.options.configurationextensions/9.0.10/microsoft.extensions.options.configurationextensions.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.options.dataannotations/9.0.10/microsoft.extensions.options.dataannotations.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.extensions.primitives/9.0.10/microsoft.extensions.primitives.9.0.10.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/system.numerics.vectors/4.4.0/system.numerics.vectors.4.4.0.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.netcore.app.ref/8.0.26/microsoft.netcore.app.ref.8.0.26.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.26/microsoft.aspnetcore.app.ref.8.0.26.nupkg.sha512",
+    "/Users/callumrose/.nuget/packages/netstandard.library.ref/2.1.0/netstandard.library.ref.2.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
