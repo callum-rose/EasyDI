@@ -12,14 +12,12 @@ public sealed class LifecycleHookHandlerFactory
 		_objectResolver = objectResolver;
 	}
 
-	public LifecycleHooksHandler CreateFromHook<TLifecycleHook>(Action<TLifecycleHook> invokeAction)
+	public LifecycleHooksHandler<TLifecycleHook> CreateFromHook<TLifecycleHook>()
 		where TLifecycleHook : ILifecycleHook
 	{
-		return _objectResolver.TryInstantiate<LifecycleHooksHandler<TLifecycleHook>>(
-			out var instance,
-			invokeAction.ToArgumentInfo()) ?
+		return _objectResolver.TryInstantiate<LifecycleHooksHandler<TLifecycleHook>>(out var instance) ?
 			instance :
-			NullLifecycleHooksHandler.Instance;
+			new LifecycleHooksHandler<TLifecycleHook>([]);
 	}
 
 	public LifecycleHooksHandler CreateFromHandler<TLifecycleHooksHandler>()
