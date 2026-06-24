@@ -11,6 +11,9 @@ namespace EasyDI.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 {
+	private const string RegistryExtensionsType = "EasyDI.Registering.IObjectRegistryExtensions";
+	private const string BuilderExtensionsType = "EasyDI.Registering.RegistrationBuilderExtensions";
+
 	public static readonly DiagnosticDescriptor ArgumentNotFoundInConstructorRule = new DiagnosticDescriptor(
 		DiagnosticIds.ArgumentNotFoundInConstructor,
 		"Parameter type not found in any constructor of the registered type",
@@ -56,6 +59,7 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 	private void AnalyzeMethod(SyntaxNodeAnalysisContext context)
 	{
 		var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+		var compilation = (CSharpCompilation)context.Compilation;
 
 		// Track registered types per registry (builder) symbol
 		var registeredTypesPerRegistry = new Dictionary<ISymbol, HashSet<ITypeSymbol>>(SymbolEqualityComparer.Default);
@@ -153,7 +157,7 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 				}
 
 				var matchesAnyCtorParam = constructors.Any(ctor =>
-					ctor.Parameters.Any(p => SymbolEqualityComparer.Default.Equals(p.Type, argumentType)));
+					ctor.Parameters.Any(p => IsAssignableToParameter(compilation, argumentType, p.Type)));
 
 				if (!matchesAnyCtorParam)
 				{
@@ -183,6 +187,10 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 
 		var methodName = memberAccess.Name.Identifier.Text;
 		if (methodName is not ("RegisterSingleton" or "RegisterScoped" or "RegisterTransient" or "RegisterInstance"))
+			return false;
+
+		// Verify the method actually belongs to EasyDI, not an unrelated user method of the same name
+		if (!IsEasyDiMethod(semanticModel, invocation, RegistryExtensionsType))
 			return false;
 
 		rootSymbol = semanticModel.GetSymbolInfo(memberAccess.Expression).Symbol;
@@ -224,7 +232,8 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 		{
 			var methodName = memberAccess.Name.Identifier.Text;
 
-			if (methodName == "WithArgument")
+			if (methodName == "WithArgument" &&
+			    IsEasyDiMethod(semanticModel, invocation, BuilderExtensionsType))
 			{
 				ITypeSymbol argType = null;
 				Location argLocation = null;
@@ -262,7 +271,8 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 				continue;
 			}
 
-			if (methodName is "RegisterSingleton" or "RegisterScoped" or "RegisterTransient")
+			if (methodName is "RegisterSingleton" or "RegisterScoped" or "RegisterTransient" &&
+			    IsEasyDiMethod(semanticModel, invocation, RegistryExtensionsType))
 			{
 				rootSymbol = semanticModel.GetSymbolInfo(memberAccess.Expression).Symbol;
 
@@ -282,6 +292,25 @@ public class ArgumentConstructorCompatibilityAnalyzer : DiagnosticAnalyzer
 		return argumentTypes.Count > 0 ?
 			new RegistrationChain(registeredType, rootSymbol, argumentTypes, argumentLocations) :
 			null;
+	}
+
+	private static bool IsEasyDiMethod(SemanticModel semanticModel,
+		InvocationExpressionSyntax invocation,
+		string containingTypeDisplayName)
+	{
+		return semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol methodSymbol &&
+		       methodSymbol.ContainingType?.ToDisplayString() == containingTypeDisplayName;
+	}
+
+	private static bool IsAssignableToParameter(CSharpCompilation compilation,
+		ITypeSymbol argumentType,
+		ITypeSymbol parameterType)
+	{
+		if (SymbolEqualityComparer.Default.Equals(argumentType, parameterType))
+			return true;
+
+		var conversion = compilation.ClassifyConversion(argumentType, parameterType);
+		return conversion.IsIdentity || (conversion.IsImplicit && (conversion.IsReference || conversion.IsBoxing));
 	}
 
 	private sealed class RegistrationChain

@@ -25,8 +25,14 @@ namespace EasyDI.Analyzers
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-            var memberAccess = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf()
-                .OfType<MemberAccessExpressionSyntax>().First();
+            // The diagnostic is reported on the "RegisterInstance" name node, so resolve the node at
+            // the diagnostic span and take the member access it directly belongs to. Walking ancestors
+            // with First() could throw, or in a chained call select the wrong (outer) member access.
+            var node = root.FindNode(diagnosticSpan);
+            var memberAccess = node.FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
+
+            if (memberAccess == null)
+                return;
 
             context.RegisterCodeFix(
                 CodeAction.Create(
