@@ -96,3 +96,8 @@ crashlytics-build.properties
 # Include
 !**/csc.rsp
 !**/Example.unitypackage
+
+# NuGetForUnity restore target (see NuGet.config repositoryPath / packages.config).
+# These are the EasyDI packages restored from the NuGet feed — build artifacts of this
+# repo's own projects, so they are not committed. Run a NuGetForUnity restore to populate.
+/[Aa]ssets/EasyDI.Unity/Plugins/
