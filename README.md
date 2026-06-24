@@ -160,7 +160,7 @@ var rootRegistry = ObjectRegistry.CreateRoot();
 rootRegistry.RegisterSingleton<ServiceA>();
 IObjectResolver rootResolver = rootRegistry.Build();
    
-var childRegistry = rootRegistry.CreateChild(rootResolver);
+var childRegistry = ObjectRegistry.CreateChild(rootResolver);
 childRegistry.RegisterSingleton<ServiceB>();
 IObjectResolver childResolver = childRegistry.Build();
 
