@@ -48,6 +48,10 @@ namespace EasyDI.Analyzers
                     if (IsPartOfFluentChain(invocation))
                         return;
 
+                    // Verify the method actually belongs to EasyDI, not an unrelated user method named "RegisterInstance"
+                    if (!IsEasyDiRegisterInstance(context.SemanticModel, invocation))
+                        return;
+
                     context.ReportDiagnostic(Diagnostic.Create(
                         Rule,
                         memberAccess.Name.GetLocation()));
@@ -74,5 +78,10 @@ namespace EasyDI.Analyzers
             return false;
         }
 
+        private static bool IsEasyDiRegisterInstance(SemanticModel semanticModel, InvocationExpressionSyntax invocation)
+        {
+            return semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol methodSymbol &&
+                   methodSymbol.ContainingType?.ToDisplayString() == "EasyDI.Registering.IObjectRegistryExtensions";
+        }
     }
 }

@@ -10,6 +10,9 @@ namespace EasyDI.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class RegistrationTypeCompatibilityAnalyzer : DiagnosticAnalyzer
 {
+	private const string RegistryExtensionsType = "EasyDI.Registering.IObjectRegistryExtensions";
+	private const string BuilderExtensionsType = "EasyDI.Registering.RegistrationBuilderExtensions";
+
 	public static readonly DiagnosticDescriptor TypeNotAssignableRule = new(
 		DiagnosticIds.TypeNotAssignable,
 		"Type in registration method is not assignable to type in 'As' method",
@@ -38,13 +41,17 @@ public class RegistrationTypeCompatibilityAnalyzer : DiagnosticAnalyzer
 		if (invocationExpr.Expression is MemberAccessExpressionSyntax memberAccess &&
 		    IsAsMethod(memberAccess.Name))
 		{
+			var semanticModel = context.SemanticModel;
+
+			// Verify the As() call actually belongs to EasyDI, not an unrelated user method named "As"
+			if (!IsEasyDiMethod(semanticModel, invocationExpr, BuilderExtensionsType))
+				return;
+
 			// Find the RegisterSingleton call in the chain by looking at the target expression
 			var registerCall = FindRegisterCall(memberAccess.Expression);
 
-			if (registerCall != null)
+			if (registerCall != null && IsEasyDiMethod(semanticModel, registerCall, RegistryExtensionsType))
 			{
-				var semanticModel = context.SemanticModel;
-
 				// Get type arguments
 				var registerTypeArg = GetFirstGenericTypeArgument(registerCall, semanticModel);
 
@@ -82,12 +89,15 @@ public class RegistrationTypeCompatibilityAnalyzer : DiagnosticAnalyzer
 		ITypeSymbol asTypeArg,
 		Location location)
 	{
-		var semanticModel = context.SemanticModel;
+		// Check if registerTypeArg is assignable to asTypeArg via an identity, implicit reference,
+		// or boxing conversion. HasImplicitConversion is unsuitable here because it also accepts
+		// user-defined implicit operators, which are not valid for DI assignability.
+		var compilation = (CSharpCompilation)context.Compilation;
+		var conversion = compilation.ClassifyConversion(registerTypeArg, asTypeArg);
+		var isAssignable = conversion.IsIdentity ||
+		                   (conversion.IsImplicit && (conversion.IsReference || conversion.IsBoxing));
 
-		// Check if asTypeArg is assignable from registerTypeArg
-		var conversion = semanticModel.Compilation.HasImplicitConversion(registerTypeArg, asTypeArg);
-
-		if (!conversion)
+		if (!isAssignable)
 		{
 			var registerMethodName = GetRegisterMethodName(registerCall);
 			var diagnostic = Diagnostic.Create(
@@ -160,6 +170,14 @@ public class RegistrationTypeCompatibilityAnalyzer : DiagnosticAnalyzer
 	private static bool IsAsMethod(SimpleNameSyntax name)
 	{
 		return name.Identifier.ValueText == "As";
+	}
+
+	private static bool IsEasyDiMethod(SemanticModel semanticModel,
+		InvocationExpressionSyntax invocation,
+		string containingTypeDisplayName)
+	{
+		return semanticModel.GetSymbolInfo(invocation).Symbol is IMethodSymbol methodSymbol &&
+		       methodSymbol.ContainingType?.ToDisplayString() == containingTypeDisplayName;
 	}
 
 	private static Location GetAsTypeArgumentLocation(InvocationExpressionSyntax invocation)
