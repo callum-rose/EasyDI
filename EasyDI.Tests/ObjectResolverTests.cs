@@ -119,6 +119,21 @@ public class ObjectResolverTests
 	}
 
 	[Test]
+	public void ResolveUnregisteredType_ThrowsResolutionExceptionWithRichDiagnosticNotDoubleWrapped()
+	{
+		var resolverBuilder = ObjectRegistry.CreateRoot();
+		resolverBuilder.RegisterSingleton<A>();
+		var resolver = resolverBuilder.Build();
+
+		var ex = Assert.Throws<ResolutionException>(() => resolver.Resolve<IService>());
+
+		// The rich "what is registered" diagnostic must live on the thrown exception itself,
+		// not be buried inside a second, bare ResolutionException.
+		Assert.That(ex.Message, Does.Contain("Available registrations"));
+		Assert.That(ex.InnerException, Is.Not.TypeOf<ResolutionException>());
+	}
+
+	[Test]
 	public void ResolveSingletonMultipleTimes_ReturnsSameInstanceReference()
 	{
 		var resolverBuilder = ObjectRegistry.CreateRoot();

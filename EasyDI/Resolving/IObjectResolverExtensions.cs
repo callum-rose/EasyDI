@@ -51,6 +51,12 @@ public static class IObjectResolverExtensions
 				_ => throw new ArgumentOutOfRangeException()
 			};
 		}
+		catch (Exception e) when (e is ResolutionException or InstantiationException or FactoryException)
+		{
+			// These already carry a rich, type-specific diagnostic - surface them as-is
+			// rather than burying the message inside a second ResolutionException.
+			throw;
+		}
 		catch (Exception e)
 		{
 			throw new ResolutionException(query.Type, e);
