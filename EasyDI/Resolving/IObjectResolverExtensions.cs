@@ -62,6 +62,56 @@ public static class IObjectResolverExtensions
 		return resolver.TryResolve<T>(out var instance) ? instance : fallbackValue;
 	}
 
+	/// <summary>
+	/// Attempts to resolve <typeparamref name="T"/> without throwing, returning a <see cref="Result{T}"/>
+	/// that is either a <see cref="Result{T}.Success"/> with the instance or a <see cref="Result{T}.Failure"/>
+	/// carrying the exception that prevented resolution (not registered, missing transitive dependency, or a
+	/// throwing constructor).
+	/// </summary>
+	public static Result<T> TryResolve<T>(this IObjectResolver resolver)
+	{
+		var query = ResolutionQuery.Create(typeof(T)) with { DependencyChain = [typeof(T)] };
+		return resolver.TryResolve(query) switch
+		{
+			Result<object>.Success success => new Result<T>.Success((T)success.Value),
+			Result<object>.Failure failure => new Result<T>.Failure(failure.Exception),
+			_ => new Result<T>.Failure(new ArgumentOutOfRangeException(nameof(resolver)))
+		};
+	}
+
+	/// <summary>
+	/// Attempts to resolve the given <paramref name="query"/> without throwing, returning a
+	/// <see cref="Result{T}"/> that is either a <see cref="Result{T}.Success"/> with the instance or a
+	/// <see cref="Result{T}.Failure"/> carrying the exception that prevented resolution.
+	/// </summary>
+	public static Result<object> TryResolve(this IObjectResolver resolver, ResolutionQuery query)
+	{
+		switch (resolver.TryLazyResolve(query))
+		{
+			case Success success:
+				try
+				{
+					// The getter lazily builds the whole graph, so a missing transitive dependency or a
+					// throwing constructor surfaces here rather than at registration time.
+					return new Result<object>.Success(success.InstanceGetter.Invoke());
+				}
+				catch (Exception e)
+				{
+					return new Result<object>.Failure(new ResolutionException(query.Type, e));
+				}
+			case Fail fail:
+				return new Result<object>.Failure(
+					new ResolutionException(query.Type, fail, resolver.GetAllResolvableTypes()));
+			default:
+				return new Result<object>.Failure(new ArgumentOutOfRangeException(nameof(resolver)));
+		}
+	}
+
+	/// <summary>
+	/// Convenience <c>Try</c> overload that reports only whether resolution succeeded. Never throws; the
+	/// failing instance is set to <c>default</c>. Use <see cref="TryResolve{T}(IObjectResolver)"/> when you
+	/// need the exception that caused a failure.
+	/// </summary>
 	public static bool TryResolve<T>(this IObjectResolver resolver, [NotNullWhen(true)] out T? instance)
 	{
 		if (resolver.TryLazyResolve<T>(out var lazyInstance))
@@ -73,8 +123,8 @@ public static class IObjectResolverExtensions
 			}
 			catch
 			{
-				// A missing transitive dependency or a throwing constructor surfaces only when the
-				// graph is lazily built. Honour the Try contract and report failure instead of throwing.
+				// Swallowed deliberately: this overload only reports success/failure. Callers who need the
+				// cause should use the Result<T>-returning TryResolve overload.
 			}
 		}
 
@@ -82,6 +132,11 @@ public static class IObjectResolverExtensions
 		return false;
 	}
 
+	/// <summary>
+	/// Convenience <c>Try</c> overload that reports only whether resolution succeeded. Never throws; the
+	/// failing instance is set to <c>null</c>. Use <see cref="TryResolve(IObjectResolver, ResolutionQuery)"/>
+	/// when you need the exception that caused a failure.
+	/// </summary>
 	public static bool TryResolve(this IObjectResolver resolver,
 		ResolutionQuery resolutionQuery,
 		[NotNullWhen(true)] out object? instance)
@@ -95,8 +150,8 @@ public static class IObjectResolverExtensions
 			}
 			catch
 			{
-				// A missing transitive dependency or a throwing constructor surfaces only when the
-				// graph is lazily built. Honour the Try contract and report failure instead of throwing.
+				// Swallowed deliberately: this overload only reports success/failure. Callers who need the
+				// cause should use the Result<object>-returning TryResolve overload.
 			}
 		}
 

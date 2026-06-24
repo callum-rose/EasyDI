@@ -1,3 +1,4 @@
+using EasyDI.Exceptions;
 using EasyDI.Registering;
 using EasyDI.Resolving;
 
@@ -37,7 +38,61 @@ public class IObjectResolverExtensionsTests
 	private class NeedsMissingDependency(Dependency dependency);
 
 	[Test]
-	public void TryResolve_WhenConstructorThrows_ReturnsFalseInsteadOfThrowing()
+	public void TryResolveResult_WhenRegistered_ReturnsSuccessWithInstance()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<Dependency>();
+		var resolver = registry.Build();
+
+		var result = resolver.TryResolve<Dependency>();
+
+		Assert.That(result, Is.InstanceOf<Result<Dependency>.Success>());
+		Assert.That(((Result<Dependency>.Success)result).Value, Is.TypeOf<Dependency>());
+	}
+
+	[Test]
+	public void TryResolveResult_WhenConstructorThrows_ReturnsFailureCarryingException()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<ThrowingConstructor>();
+		var resolver = registry.Build();
+
+		Result<ThrowingConstructor> result = null!;
+		Assert.That(() => result = resolver.TryResolve<ThrowingConstructor>(), Throws.Nothing);
+
+		Assert.That(result, Is.InstanceOf<Result<ThrowingConstructor>.Failure>());
+		var exception = ((Result<ThrowingConstructor>.Failure)result).Exception;
+		Assert.That(exception, Is.InstanceOf<ResolutionException>());
+		Assert.That(GetInnermost(exception), Is.InstanceOf<InvalidOperationException>());
+	}
+
+	[Test]
+	public void TryResolveResult_WhenTransitiveDependencyMissing_ReturnsFailureCarryingException()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<NeedsMissingDependency>();
+		var resolver = registry.Build();
+
+		Result<NeedsMissingDependency> result = null!;
+		Assert.That(() => result = resolver.TryResolve<NeedsMissingDependency>(), Throws.Nothing);
+
+		Assert.That(result, Is.InstanceOf<Result<NeedsMissingDependency>.Failure>());
+		Assert.That(((Result<NeedsMissingDependency>.Failure)result).Exception, Is.Not.Null);
+	}
+
+	[Test]
+	public void TryResolveResult_WhenNotRegistered_ReturnsFailureCarryingResolutionException()
+	{
+		var resolver = ObjectRegistry.CreateRoot().Build();
+
+		var result = resolver.TryResolve<Dependency>();
+
+		Assert.That(result, Is.InstanceOf<Result<Dependency>.Failure>());
+		Assert.That(((Result<Dependency>.Failure)result).Exception, Is.InstanceOf<ResolutionException>());
+	}
+
+	[Test]
+	public void TryResolveBool_WhenConstructorThrows_ReturnsFalseInsteadOfThrowing()
 	{
 		var registry = ObjectRegistry.CreateRoot();
 		registry.RegisterSingleton<ThrowingConstructor>();
@@ -45,20 +100,6 @@ public class IObjectResolverExtensionsTests
 
 		bool result = false;
 		ThrowingConstructor? instance = null;
-		Assert.That(() => result = resolver.TryResolve(out instance), Throws.Nothing);
-		Assert.That(result, Is.False);
-		Assert.That(instance, Is.Null);
-	}
-
-	[Test]
-	public void TryResolve_WhenTransitiveDependencyMissing_ReturnsFalseInsteadOfThrowing()
-	{
-		var registry = ObjectRegistry.CreateRoot();
-		registry.RegisterSingleton<NeedsMissingDependency>();
-		var resolver = registry.Build();
-
-		bool result = false;
-		NeedsMissingDependency? instance = null;
 		Assert.That(() => result = resolver.TryResolve(out instance), Throws.Nothing);
 		Assert.That(result, Is.False);
 		Assert.That(instance, Is.Null);
@@ -75,5 +116,15 @@ public class IObjectResolverExtensionsTests
 		NeedsMissingDependency? result = null;
 		Assert.That(() => result = resolver.ResolveOrFallback(fallback), Throws.Nothing);
 		Assert.That(result, Is.SameAs(fallback));
+	}
+
+	private static Exception GetInnermost(Exception exception)
+	{
+		while (exception.InnerException is { } inner)
+		{
+			exception = inner;
+		}
+
+		return exception;
 	}
 }
