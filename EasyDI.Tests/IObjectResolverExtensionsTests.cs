@@ -92,20 +92,6 @@ public class IObjectResolverExtensionsTests
 	}
 
 	[Test]
-	public void TryResolveBool_WhenConstructorThrows_ReturnsFalseInsteadOfThrowing()
-	{
-		var registry = ObjectRegistry.CreateRoot();
-		registry.RegisterSingleton<ThrowingConstructor>();
-		var resolver = registry.Build();
-
-		bool result = false;
-		ThrowingConstructor? instance = null;
-		Assert.That(() => result = resolver.TryResolve(out instance), Throws.Nothing);
-		Assert.That(result, Is.False);
-		Assert.That(instance, Is.Null);
-	}
-
-	[Test]
 	public void ResolveOrFallback_WhenTransitiveDependencyMissing_ReturnsFallback()
 	{
 		var registry = ObjectRegistry.CreateRoot();

@@ -59,7 +59,7 @@ public static class IObjectResolverExtensions
 
 	public static T? ResolveOrFallback<T>(this IObjectResolver resolver, T? fallbackValue)
 	{
-		return resolver.TryResolve<T>(out var instance) ? instance : fallbackValue;
+		return resolver.TryResolve<T>() is Result<T>.Success success ? success.Value : fallbackValue;
 	}
 
 	/// <summary>
@@ -105,58 +105,6 @@ public static class IObjectResolverExtensions
 			default:
 				return new Result<object>.Failure(new ArgumentOutOfRangeException(nameof(resolver)));
 		}
-	}
-
-	/// <summary>
-	/// Convenience <c>Try</c> overload that reports only whether resolution succeeded. Never throws; the
-	/// failing instance is set to <c>default</c>. Use <see cref="TryResolve{T}(IObjectResolver)"/> when you
-	/// need the exception that caused a failure.
-	/// </summary>
-	public static bool TryResolve<T>(this IObjectResolver resolver, [NotNullWhen(true)] out T? instance)
-	{
-		if (resolver.TryLazyResolve<T>(out var lazyInstance))
-		{
-			try
-			{
-				instance = lazyInstance.Invoke()!;
-				return true;
-			}
-			catch
-			{
-				// Swallowed deliberately: this overload only reports success/failure. Callers who need the
-				// cause should use the Result<T>-returning TryResolve overload.
-			}
-		}
-
-		instance = default;
-		return false;
-	}
-
-	/// <summary>
-	/// Convenience <c>Try</c> overload that reports only whether resolution succeeded. Never throws; the
-	/// failing instance is set to <c>null</c>. Use <see cref="TryResolve(IObjectResolver, ResolutionQuery)"/>
-	/// when you need the exception that caused a failure.
-	/// </summary>
-	public static bool TryResolve(this IObjectResolver resolver,
-		ResolutionQuery resolutionQuery,
-		[NotNullWhen(true)] out object? instance)
-	{
-		if (resolver.TryLazyResolve(resolutionQuery) is Success success)
-		{
-			try
-			{
-				instance = success.InstanceGetter.Invoke();
-				return true;
-			}
-			catch
-			{
-				// Swallowed deliberately: this overload only reports success/failure. Callers who need the
-				// cause should use the Result<object>-returning TryResolve overload.
-			}
-		}
-
-		instance = null;
-		return false;
 	}
 
 	public static bool TryLazyResolve<T>(this IObjectResolver resolver, [NotNullWhen(true)] out Func<T>? instanceGetter)
