@@ -27,4 +27,53 @@ public class IObjectResolverExtensionsTests
 
 		Assert.That(Act, Throws.Exception);
 	}
+
+	private class ThrowingConstructor
+	{
+		public ThrowingConstructor() => throw new InvalidOperationException("boom");
+	}
+
+	private class Dependency;
+	private class NeedsMissingDependency(Dependency dependency);
+
+	[Test]
+	public void TryResolve_WhenConstructorThrows_ReturnsFalseInsteadOfThrowing()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<ThrowingConstructor>();
+		var resolver = registry.Build();
+
+		bool result = false;
+		ThrowingConstructor? instance = null;
+		Assert.That(() => result = resolver.TryResolve(out instance), Throws.Nothing);
+		Assert.That(result, Is.False);
+		Assert.That(instance, Is.Null);
+	}
+
+	[Test]
+	public void TryResolve_WhenTransitiveDependencyMissing_ReturnsFalseInsteadOfThrowing()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<NeedsMissingDependency>();
+		var resolver = registry.Build();
+
+		bool result = false;
+		NeedsMissingDependency? instance = null;
+		Assert.That(() => result = resolver.TryResolve(out instance), Throws.Nothing);
+		Assert.That(result, Is.False);
+		Assert.That(instance, Is.Null);
+	}
+
+	[Test]
+	public void ResolveOrFallback_WhenTransitiveDependencyMissing_ReturnsFallback()
+	{
+		var registry = ObjectRegistry.CreateRoot();
+		registry.RegisterSingleton<NeedsMissingDependency>();
+		var resolver = registry.Build();
+
+		var fallback = new NeedsMissingDependency(new Dependency());
+		NeedsMissingDependency? result = null;
+		Assert.That(() => result = resolver.ResolveOrFallback(fallback), Throws.Nothing);
+		Assert.That(result, Is.SameAs(fallback));
+	}
 }

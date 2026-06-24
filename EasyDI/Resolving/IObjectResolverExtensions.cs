@@ -66,8 +66,16 @@ public static class IObjectResolverExtensions
 	{
 		if (resolver.TryLazyResolve<T>(out var lazyInstance))
 		{
-			instance = lazyInstance.Invoke()!;
-			return true;
+			try
+			{
+				instance = lazyInstance.Invoke()!;
+				return true;
+			}
+			catch
+			{
+				// A missing transitive dependency or a throwing constructor surfaces only when the
+				// graph is lazily built. Honour the Try contract and report failure instead of throwing.
+			}
 		}
 
 		instance = default;
@@ -80,8 +88,16 @@ public static class IObjectResolverExtensions
 	{
 		if (resolver.TryLazyResolve(resolutionQuery) is Success success)
 		{
-			instance = success.InstanceGetter.Invoke();
-			return true;
+			try
+			{
+				instance = success.InstanceGetter.Invoke();
+				return true;
+			}
+			catch
+			{
+				// A missing transitive dependency or a throwing constructor surfaces only when the
+				// graph is lazily built. Honour the Try contract and report failure instead of throwing.
+			}
 		}
 
 		instance = null;
