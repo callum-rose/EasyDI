@@ -15,6 +15,12 @@ public static class IObjectResolverExtensions
 		return resolver.CanResolve(typeof(IReadOnlyList<>).MakeGenericType(type));
 	}
 
+	/// <summary>
+	/// Returns whether <typeparamref name="T"/> is registered. This is a shallow check: it only verifies that a
+	/// matching registration exists, <b>not</b> that the type's constructor dependencies are themselves resolvable.
+	/// A type can therefore satisfy <see cref="CanResolve{T}"/> and still throw at construction if one of its
+	/// dependencies is unregistered. See the "Deep resolvability checking" note in the README for context.
+	/// </summary>
 	public static bool CanResolve<T>(this IObjectResolver resolver)
 	{
 		return resolver.CanResolve(ResolutionQuery.Create(typeof(T)));
