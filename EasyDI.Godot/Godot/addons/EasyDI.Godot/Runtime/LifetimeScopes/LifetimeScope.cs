@@ -51,7 +51,7 @@ public abstract partial class LifetimeScope : Node
 
 	public override void _Ready()
 	{
-		_entryPointManager?.InvokeStartables();
+		_entryPointManager?.InvokeReadyables();
 	}
 
 	public override void _Process(double delta)
