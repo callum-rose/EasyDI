@@ -37,6 +37,11 @@ public static class IObjectRegistryExtensions
 
 		registry.RegisterScoped<IOptionsSnapshot<TOptions>>(CreateOptionsSnapshot<TOptions>);
 
+		// The monitor is registered as IDisposable so its configuration change-token subscription is
+		// disposed on scope teardown (via the LifecycleHooks DisposablesHandler, when that package is used).
+		// IDisposable must be marked resolvable-as-many so that registering more than one options type does
+		// not produce a duplicate single registration that fails ObjectRegistry.Validate() at Build().
+		registry.MarkResolvableAsMany<IDisposable>();
 		registry.RegisterSingleton(CreateOptionsMonitor<TOptions>(sectionName))
 			.As<IOptionsMonitor<TOptions>>()
 			.As<IDisposable>();

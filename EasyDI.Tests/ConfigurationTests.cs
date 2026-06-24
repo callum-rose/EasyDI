@@ -191,4 +191,37 @@ public class ConfigurationTests
 		Assert.That(options.CurrentValue.Text, Is.EqualTo("Hello"));
 		Assert.That(options.CurrentValue.Number, Is.EqualTo(5));
 	}
+
+	public class MyOtherOptions
+	{
+		public string? Value { get; set; }
+	}
+
+	[Test]
+	public void RegisterOptions_WhenCalledForMultipleOptionsTypes_BuildsSuccessfully()
+	{
+		var configuration = new ConfigurationBuilder()
+			.AddInMemoryCollection(new Dictionary<string, string?>
+			{
+				{ "MyOptions:Text", "Hello" },
+				{ "MyOptions:Number", "5" },
+				{ "MyOtherOptions:Value", "World" }
+			})
+			.Build();
+
+		var registry = ObjectRegistry.CreateRoot();
+
+		registry.RegisterRootConfiguration(configuration);
+		registry.RegisterOptions<MyOptions>("MyOptions");
+		registry.RegisterOptions<MyOtherOptions>("MyOtherOptions");
+
+		var resolver = registry.Build();
+
+		Assert.That(resolver.Resolve<IOptions<MyOptions>>().Value.Text, Is.EqualTo("Hello"));
+		Assert.That(resolver.Resolve<IOptions<MyOtherOptions>>().Value.Value, Is.EqualTo("World"));
+
+		// Each monitor is still enrolled as IDisposable (so its change-token subscription is disposed on
+		// scope teardown), and both resolve together because IDisposable is marked resolvable-as-many.
+		Assert.That(resolver.Resolve<IEnumerable<IDisposable>>().Count(), Is.EqualTo(2));
+	}
 }
