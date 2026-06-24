@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>RE_Container.Godot</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>REContainer.Godot</RootNamespace>
+        <Title>RE-Container.Godot.Core</Title>
+        <Authors>Alex Williams</Authors>
+        <Description>Contains the core classes to get RE-Container LifetimeScopes working in Godot</Description>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Version>1.0.6</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GodotSharp" Version="4.5.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RE-Container.LifecycleHooks\RE-Container.LifecycleHooks.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="ScriptTemplates\**" Pack="true" PackagePath="ScriptTemplates\"/>
+    </ItemGroup>
+
+</Project>

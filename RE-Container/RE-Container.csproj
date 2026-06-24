@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>REContainer</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <!-- Basic Package Info -->
+        <PackageId>RE-Container</PackageId>
+        <PackageVersion>1.1.0</PackageVersion>
+        <Authors>Callum Rose</Authors>
+        <Description>A minimal and portable DI framework for C# applications</Description>
+
+        <!-- Optional but recommended -->
+        <PackageTags>dependency-injection;container;ioc;di</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+
+        <!-- Include symbols for debugging -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <LangVersion>13</LangVersion>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+</Project>

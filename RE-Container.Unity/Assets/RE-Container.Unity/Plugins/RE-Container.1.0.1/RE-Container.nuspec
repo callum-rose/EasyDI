@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>RE-Container</id>
+    <version>1.0.1</version>
+    <authors>Callum Rose</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <description>A minimal and portable DI framework for C# applications</description>
+    <tags>dependency-injection container ioc di</tags>
+    <repository type="git" commit="499ec7c203bbfaa986a22bc9859ee212f5b75c5f" />
+    <dependencies>
+      <group targetFramework="net9.0" />
+      <group targetFramework=".NETStandard2.1" />
+    </dependencies>
+  </metadata>
+</package>

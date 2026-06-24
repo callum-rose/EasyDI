@@ -1,0 +1,9 @@
+{
+  "name": "com.red-engine.re-container-unity",
+  "version": "1.0.0",
+  "displayName": "RE-Container Unity",
+  "description": "A Unity extensions for RE-Container a minimal and portable dependency injection framework for C#.",
+  "author": {
+    "name": "Callum Rose"
+  }
+}

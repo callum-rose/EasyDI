@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="RE-Container.Analyzers\RE-Container.Analyzers.csproj" Type="Classic C#" />
+  <Project Path="RE-Container.Godot.Core\RE-Container.Godot.Core.csproj" Type="Classic C#" />
+  <Project Path="RE-Container.Configuration\RE-Container.Configuration.csproj" Type="Classic C#" />
+  <Project Path="RE-Container.LifecycleHooks\RE-Container.LifecycleHooks.csproj" Type="Classic C#" />
+  <Project Path="RE-Container.Tests\RE-Container.Tests.csproj" Type="Classic C#" />
+  <Project Path="RE-Container\RE-Container.csproj" Type="Classic C#" />
+</Solution>

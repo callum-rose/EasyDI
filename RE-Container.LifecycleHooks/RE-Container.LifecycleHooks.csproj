@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>REContainer.LifecycleHooks</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <!-- Basic Package Info -->
+        <PackageId>RE-Container.LifecycleHooks</PackageId>
+        <PackageVersion>1.0.4</PackageVersion>
+        <Authors>Callum Rose</Authors>
+        <Description>Frameworks for setting up application lifecycle hooks using RE-Container</Description>
+
+        <!-- Optional but recommended -->
+        <PackageTags>dependency-injection;container;ioc;di;lifecycle;hooks</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+
+        <!-- Include symbols for debugging -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <LangVersion>13</LangVersion>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RE-Container.Analyzers\RE-Container.Analyzers.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer"/>
+        <ProjectReference Include="..\RE-Container\RE-Container.csproj"/>
+    </ItemGroup>
+
+</Project>

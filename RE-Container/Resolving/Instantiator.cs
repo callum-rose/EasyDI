@@ -1,0 +1,26 @@
+using System.Diagnostics.CodeAnalysis;
+
+namespace REContainer.Resolving;
+
+internal static class Instantiator
+{
+	public static bool TryCreateInstance(Type type,
+		IObjectResolver resolver,
+		IReadOnlyList<Type> dependencyChain,
+		[NotNullWhen(true)] out object? instance)
+	{
+		if (!ConstructorHelper.GetMostRelevant(type, resolver, out var constructorInfo))
+		{
+			instance = null;
+			return false;
+		}
+
+		var arguments = constructorInfo.GetParameters()
+			.Select(p => p.ParameterType)
+			.Select(t => resolver.Resolve(ResolutionQuery.Create(t) with { DependencyChain = [..dependencyChain, t] }))
+			.ToArray();
+
+		instance = constructorInfo.Invoke(arguments);
+		return true;
+	}
+}

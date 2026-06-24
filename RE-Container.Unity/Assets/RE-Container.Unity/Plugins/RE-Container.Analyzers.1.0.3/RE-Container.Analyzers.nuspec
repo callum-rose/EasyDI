@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>RE-Container.Analyzers</id>
+    <version>1.0.3</version>
+    <authors>RE-Container.Analyzers</authors>
+    <developmentDependency>true</developmentDependency>
+    <description>Package Description</description>
+    <repository type="git" commit="5fac051ffc28aff8e35335a187413c797ec9a166" />
+  </metadata>
+</package>

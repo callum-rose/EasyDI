@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>RE_Container.Configuration</RootNamespace>
+        <LangVersion>12</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>RE-Container.Configuration</Title>
+        <Authors>Callum Rose</Authors>
+        <Description>Configure Microsoft.Extensions.Options from Microsoft.Extensions.Configuration with RE-Container</Description>
+        <PackageTags>di, re-container, recontainer, configuration, options</PackageTags>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+        <Version>1.1.0</Version>
+        <RootNamespace>REContainer.Configuration</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RE-Container.Analyzers\RE-Container.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\RE-Container\RE-Container.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.10" />
+    </ItemGroup>
+
+</Project>
