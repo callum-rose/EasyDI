@@ -223,7 +223,7 @@ rootRegistry.RegisterSingleton<ServiceA>().As<IService>();
 rootRegistry.RegisterSingleton<ServiceB>().As<IService>();
 IObjectResolver rootResolver = rootRegistry.Build();
 
-var childRegistry = rootRegistry.CreateChild(rootResolver);
+var childRegistry = ObjectRegistry.CreateChild(rootResolver);
 childRegistry.MarkResolvableAsMany<IService>();
 childRegistry.RegisterSingleton<ServiceC>().As<IService>();
 childRegistry.RegisterSingleton<ServiceD>().As<IService>();
