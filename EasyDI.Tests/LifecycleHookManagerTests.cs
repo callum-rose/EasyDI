@@ -78,6 +78,26 @@ public class LifecycleHookManagerTests
 	}
 	
 	[Test]
+	public void InvokeAll_WhenCalledRepeatedlyWithDifferentActions_UsesActionFromEachCall()
+	{
+		var lifecycleHook = Substitute.For<ITestLifecycleHook>();
+		var registration = new TestInstanceRegistrationBuilder<ITestLifecycleHook>(lifecycleHook).Build();
+		var resolver = new ObjectResolver([registration], NullObjectResolver.Instance, [typeof(ITestLifecycleHook)], []);
+		var lifecycleHookManager = new LifecycleHookManager(new LifecycleHookHandlerFactory(resolver));
+
+		var firstActionInvoked = false;
+		var secondActionInvoked = false;
+		lifecycleHookManager.InvokeAll<ITestLifecycleHook>(_ => firstActionInvoked = true);
+		lifecycleHookManager.InvokeAll<ITestLifecycleHook>(_ => secondActionInvoked = true);
+
+		Assert.Multiple(() =>
+		{
+			Assert.That(firstActionInvoked, Is.True);
+			Assert.That(secondActionInvoked, Is.True);
+		});
+	}
+
+	[Test]
 	public void InvokeAll_DoesNotThrow_WhenNoHooksRegistered()
 	{
 		var resolver = new ObjectResolver([], NullObjectResolver.Instance, [], []);

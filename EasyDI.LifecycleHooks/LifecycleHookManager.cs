@@ -19,11 +19,11 @@ public sealed class LifecycleHookManager : ILifecycleHookManager
 
 	public void InvokeAll<TLifecycleHook>(Action<TLifecycleHook> invokeAction) where TLifecycleHook : ILifecycleHook
 	{
-		var lifecycleHooksHandler = _lifecycleEventHandlers.GetOrAdd(
+		var lifecycleHooksHandler = (LifecycleHooksHandler<TLifecycleHook>)_lifecycleEventHandlers.GetOrAdd(
 			typeof(LifecycleHooksHandler<TLifecycleHook>),
-			_ => _lifecycleHookHandlerFactory.CreateFromHook(invokeAction));
+			_ => _lifecycleHookHandlerFactory.CreateFromHook<TLifecycleHook>());
 
-		lifecycleHooksHandler.InvokeAll();
+		lifecycleHooksHandler.InvokeAll(invokeAction);
 	}
 
 	public void Dispose()

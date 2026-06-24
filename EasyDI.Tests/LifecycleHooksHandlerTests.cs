@@ -12,7 +12,7 @@ public class LifecycleHooksHandlerTests
 
 	public sealed class TestLifecycleHooksHandler : LifecycleHooksHandler<IEventHandler>
 	{
-		public TestLifecycleHooksHandler(IReadOnlyList<IEventHandler> items) : base(e => e.Invoke(), items) { }
+		public TestLifecycleHooksHandler(IReadOnlyList<IEventHandler> items) : base(items) { }
 	}
 
 	[Test]
@@ -21,9 +21,9 @@ public class LifecycleHooksHandlerTests
 		var eventHandler0 = Substitute.For<IEventHandler>();
 		var eventHandler1 = Substitute.For<IEventHandler>();
 		var lifeCycleEventHandler = new TestLifecycleHooksHandler([eventHandler0, eventHandler1]);
-		
-		lifeCycleEventHandler.InvokeAll();
-		
+
+		lifeCycleEventHandler.InvokeAll(e => e.Invoke());
+
 		eventHandler0.Received(1).Invoke();
 		eventHandler1.Received(1).Invoke();
 	}

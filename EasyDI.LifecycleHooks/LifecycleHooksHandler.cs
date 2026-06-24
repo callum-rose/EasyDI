@@ -7,20 +7,20 @@ public abstract class LifecycleHooksHandler
 
 public class LifecycleHooksHandler<T> : LifecycleHooksHandler
 {
-	private readonly Action<T> _invokeItem;
 	private readonly IReadOnlyList<T> _items;
 
-	public LifecycleHooksHandler(Action<T> invokeItem, IReadOnlyList<T> items)
+	public LifecycleHooksHandler(IReadOnlyList<T> items)
 	{
-		_invokeItem = invokeItem;
 		_items = items;
 	}
 
-	public override void InvokeAll()
+	public void InvokeAll(Action<T> invokeItem)
 	{
 		foreach (var item in _items)
 		{
-			_invokeItem(item);
+			invokeItem(item);
 		}
 	}
+
+	public override void InvokeAll() => InvokeAll(static _ => { });
 }
