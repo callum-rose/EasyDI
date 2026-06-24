@@ -71,33 +71,52 @@ public static class IObjectResolverExtensions
 
 	public static T? ResolveOrFallback<T>(this IObjectResolver resolver, T? fallbackValue)
 	{
-		return resolver.TryResolve<T>(out var instance) ? instance : fallbackValue;
+		return resolver.TryResolve<T>() is Result<T>.Success success ? success.Value : fallbackValue;
 	}
 
-	public static bool TryResolve<T>(this IObjectResolver resolver, [NotNullWhen(true)] out T? instance)
+	/// <summary>
+	/// Attempts to resolve <typeparamref name="T"/> without throwing, returning a <see cref="Result{T}"/>
+	/// that is either a <see cref="Result{T}.Success"/> with the instance or a <see cref="Result{T}.Failure"/>
+	/// carrying the exception that prevented resolution (not registered, missing transitive dependency, or a
+	/// throwing constructor).
+	/// </summary>
+	public static Result<T> TryResolve<T>(this IObjectResolver resolver)
 	{
-		if (resolver.TryLazyResolve<T>(out var lazyInstance))
+		var query = ResolutionQuery.Create(typeof(T)) with { DependencyChain = [typeof(T)] };
+		return resolver.TryResolve(query) switch
 		{
-			instance = lazyInstance.Invoke()!;
-			return true;
-		}
-
-		instance = default;
-		return false;
+			Result<object>.Success success => new Result<T>.Success((T)success.Value),
+			Result<object>.Failure failure => new Result<T>.Failure(failure.Exception),
+			_ => new Result<T>.Failure(new ArgumentOutOfRangeException(nameof(resolver)))
+		};
 	}
 
-	public static bool TryResolve(this IObjectResolver resolver,
-		ResolutionQuery resolutionQuery,
-		[NotNullWhen(true)] out object? instance)
+	/// <summary>
+	/// Attempts to resolve the given <paramref name="query"/> without throwing, returning a
+	/// <see cref="Result{T}"/> that is either a <see cref="Result{T}.Success"/> with the instance or a
+	/// <see cref="Result{T}.Failure"/> carrying the exception that prevented resolution.
+	/// </summary>
+	public static Result<object> TryResolve(this IObjectResolver resolver, ResolutionQuery query)
 	{
-		if (resolver.TryLazyResolve(resolutionQuery) is Success success)
+		switch (resolver.TryLazyResolve(query))
 		{
-			instance = success.InstanceGetter.Invoke();
-			return true;
+			case Success success:
+				try
+				{
+					// The getter lazily builds the whole graph, so a missing transitive dependency or a
+					// throwing constructor surfaces here rather than at registration time.
+					return new Result<object>.Success(success.InstanceGetter.Invoke());
+				}
+				catch (Exception e)
+				{
+					return new Result<object>.Failure(new ResolutionException(query.Type, e));
+				}
+			case Fail fail:
+				return new Result<object>.Failure(
+					new ResolutionException(query.Type, fail, resolver.GetAllResolvableTypes()));
+			default:
+				return new Result<object>.Failure(new ArgumentOutOfRangeException(nameof(resolver)));
 		}
-
-		instance = null;
-		return false;
 	}
 
 	public static bool TryLazyResolve<T>(this IObjectResolver resolver, [NotNullWhen(true)] out Func<T>? instanceGetter)
