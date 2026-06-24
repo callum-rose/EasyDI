@@ -106,7 +106,7 @@ public class ObjectResolverTests
 		Assert.Throws<InstantiationException>(() => resolver.Resolve<B>());
 	}
 
-	[Test, Ignore("TODO")]
+	[Test]
 	public void ResolveSingletonWithCircularDependency_ThrowsException()
 	{
 		var resolverBuilder = ObjectRegistry.CreateRoot();
@@ -114,7 +114,8 @@ public class ObjectResolverTests
 		resolverBuilder.RegisterSingleton<E>();
 		var resolver = resolverBuilder.Build();
 
-		Assert.Throws<InvalidOperationException>(() => resolver.Resolve<D>());
+		var ex = Assert.Throws<ResolutionException>(() => resolver.Resolve<D>());
+		Assert.That(ex.GetBaseException(), Is.TypeOf<CircularDependencyException>());
 	}
 
 	[Test]

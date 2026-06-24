@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using EasyDI.Exceptions;
 
 namespace EasyDI.Resolving;
 
@@ -17,7 +18,15 @@ internal static class Instantiator
 
 		var arguments = constructorInfo.GetParameters()
 			.Select(p => p.ParameterType)
-			.Select(t => resolver.Resolve(ResolutionQuery.Create(t) with { DependencyChain = [..dependencyChain, t] }))
+			.Select(t =>
+			{
+				if (dependencyChain.Contains(t))
+				{
+					throw new CircularDependencyException([..dependencyChain, t]);
+				}
+
+				return resolver.Resolve(ResolutionQuery.Create(t) with { DependencyChain = [..dependencyChain, t] });
+			})
 			.ToArray();
 
 		instance = constructorInfo.Invoke(arguments);
