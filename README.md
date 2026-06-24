@@ -20,7 +20,7 @@ There are loads of DI frameworks out there. Here are some we've tried:
 
 None of these frameworks tick all our boxes. There are plenty more frameworks that aren't listed here, and most would be forgiven for not supporting Unity or Godot if they allowed post-startup registrations or hierarchies (i.e. supports new registrations on scene loads). But very few do because this is a very game-dev-specific use case, where most C# applications only need to register one layer of services at startup.
 
-So we decided to make our own. EasyDI has a similar API to VContainer but with a leaner feature set and better portability.
+So we decided to make our own. EasyDI has a similar API to [VContainer](https://github.com/hadashiA/VContainer) but with a leaner feature set and better portability.
 
 # What
 
