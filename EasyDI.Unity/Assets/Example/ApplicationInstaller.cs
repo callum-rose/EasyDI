@@ -12,7 +12,7 @@ namespace EasyDI.Unity.Example
 		{
 			public void Initialise()
 			{
-				Instantiate(EasyDISettings.SessionLifetimeScope);
+				Instantiate(EasyDISettings.GetScopePrefab<SessionLifetimeScope>());
 			}
 		}
 		
