@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>CallumRose.EasyDI.Configuration</PackageId>
         <Title>EasyDI.Configuration</Title>
         <Authors>Callum Rose</Authors>
         <Description>Configure Microsoft.Extensions.Options from Microsoft.Extensions.Configuration with EasyDI</Description>
