@@ -10,6 +10,7 @@
         <Title>EasyDI.Godot.Core</Title>
         <Authors>Alex Williams</Authors>
         <Description>Contains the core classes to get EasyDI LifetimeScopes working in Godot</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Version>1.0.6</Version>

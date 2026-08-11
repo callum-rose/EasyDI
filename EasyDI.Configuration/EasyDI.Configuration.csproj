@@ -10,6 +10,7 @@
         <Authors>Callum Rose</Authors>
         <Description>Configure Microsoft.Extensions.Options from Microsoft.Extensions.Configuration with EasyDI</Description>
         <PackageTags>di, easydi, easydi, configuration, options</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
