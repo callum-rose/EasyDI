@@ -1,0 +1,7 @@
+{
+  "//": "Pinned exactly. The Unity package ships prebuilt DLLs and CI checks them byte-for-byte against a fresh build, so a different Roslyn patch would fail that check with no way to fix it short of matching SDKs. Bump this and re-run scripts/vendor-unity-dlls.sh in the same commit.",
+  "sdk": {
+    "version": "10.0.301",
+    "rollForward": "disable"
+  }
+}

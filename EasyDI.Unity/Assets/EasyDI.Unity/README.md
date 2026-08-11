@@ -4,7 +4,8 @@ This package extends EasyDI to support Unity projects.
 
 > See [EasyDI](../../../EasyDI/README.md) and [EasyDI: Lifecycle Hooks](../../../EasyDI.LifecycleHooks/README.md) for information on how the DI framework and lifecycle hooks work.
 
-> ⚠️ See [PLUGINS.md](Plugins/PLUGINS.md) for important information about using this package.
+> ⚠️ This package is self-contained — the EasyDI DLLs it needs are vendored in
+> [`Runtime/Plugins`](Runtime/Plugins/VENDORED.md), so there's nothing else to install.
 
 ## Example
 

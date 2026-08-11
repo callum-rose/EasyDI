@@ -2,7 +2,8 @@
 
 EasyDI is a minimal and portable dependency injection framework designed for our Unity, Godot and C# projects.
 
-> ⚠️ See [PLUGINS.md](EasyDI.Unity/Assets/EasyDI.Unity/Plugins/PLUGINS.md) for important information about updating this package.
+> ⚠️ The Unity package ships prebuilt DLLs. If you change core, re-run `./scripts/vendor-unity-dlls.sh`
+> and commit the result — see [VENDORED.md](EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/VENDORED.md).
 
 ## Why
 
