@@ -31,20 +31,17 @@ jobs:
       - name: Rebuild and vendor
         run: ./scripts/vendor-unity-dlls.sh
 
-      # TEMPORARY: diagnosing a macOS/Linux byte difference. Remove before merge.
-      - name: Upload the Linux-built artefacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vendored-linux
-          path: EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/
-
       # The Unity package ships prebuilt DLLs, so a change to core that isn't re-vendored
-      # leaves Unity consumers on stale code. The vendor build is byte-reproducible
-      # (see the flags in the script), so any diff here means someone forgot to re-run it.
+      # leaves Unity consumers on stale code. The script records a hash of everything the
+      # DLLs are built from; if the committed manifest doesn't match what's in the tree,
+      # someone changed core and didn't re-run it.
+      #
+      # This compares source hashes rather than DLL bytes because two builds of identical
+      # source only match byte-for-byte on the same compiler build — and Homebrew's dotnet
+      # reports the same SDK version as Microsoft's while embedding a different Roslyn.
       - name: Check for drift
         run: |
-          if ! git diff --exit-code -- EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/; then
+          if ! git diff --exit-code -- scripts/vendored-sources.sha256; then
             echo
             echo "::error::The vendored Unity DLLs are out of date with the source."
             echo "Run ./scripts/vendor-unity-dlls.sh locally and commit the result."
