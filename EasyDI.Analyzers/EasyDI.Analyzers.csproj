@@ -13,7 +13,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <DevelopmentDependency>true</DevelopmentDependency>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-        <PackageId>EasyDI.Analyzers</PackageId>
+        <PackageId>CallumRose.EasyDI.Analyzers</PackageId>
         <Version>1.0.5</Version>
         <Authors>Callum Rose</Authors>
         <Description>Roslyn analyzers that catch EasyDI registration and lifecycle mistakes at compile time</Description>

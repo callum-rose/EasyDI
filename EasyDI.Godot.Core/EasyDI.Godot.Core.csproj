@@ -7,6 +7,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>EasyDI.Godot</RootNamespace>
+        <PackageId>CallumRose.EasyDI.Godot.Core</PackageId>
         <Title>EasyDI.Godot.Core</Title>
         <Authors>Alex Williams</Authors>
         <Description>Contains the core classes to get EasyDI LifetimeScopes working in Godot</Description>

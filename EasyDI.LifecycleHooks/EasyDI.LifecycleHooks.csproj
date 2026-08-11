@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
         <!-- Basic Package Info -->
-        <PackageId>EasyDI.LifecycleHooks</PackageId>
+        <PackageId>CallumRose.EasyDI.LifecycleHooks</PackageId>
         <PackageVersion>1.0.4</PackageVersion>
         <Authors>Callum Rose</Authors>
         <Description>Frameworks for setting up application lifecycle hooks using EasyDI</Description>

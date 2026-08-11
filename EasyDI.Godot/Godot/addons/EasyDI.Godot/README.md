@@ -18,8 +18,8 @@ When enabled, the plugin automatically:
 1. Reference the EasyDI NuGet packages in your `.csproj` file:
    ```xml
    <ItemGroup>
-     <PackageReference Include="EasyDI" Version="x.x.x" />
-     <PackageReference Include="EasyDI.LifecycleHooks" Version="x.x.x" />
+     <PackageReference Include="CallumRose.EasyDI" Version="x.x.x" />
+     <PackageReference Include="CallumRose.EasyDI.LifecycleHooks" Version="x.x.x" />
    </ItemGroup>
    ```
 2. Restore NuGet packages from your NuGet source: `dotnet restore`

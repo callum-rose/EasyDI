@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
         <!-- Basic Package Info -->
-        <PackageId>EasyDI</PackageId>
+        <PackageId>CallumRose.EasyDI</PackageId>
         <PackageVersion>1.1.0</PackageVersion>
         <Authors>Callum Rose</Authors>
         <Description>A minimal and portable DI framework for C# applications</Description>
