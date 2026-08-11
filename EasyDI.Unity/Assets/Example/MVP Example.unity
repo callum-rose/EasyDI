@@ -749,7 +749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentScopeName: Session
-  primaryInstaller: {fileID: 1128887944}
+  installer: {fileID: 1128887944}
   testingBackupInstaller: {fileID: 0}
 --- !u!1 &1240912308
 GameObject:

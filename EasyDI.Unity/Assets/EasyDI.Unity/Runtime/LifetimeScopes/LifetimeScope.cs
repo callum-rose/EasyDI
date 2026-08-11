@@ -14,8 +14,19 @@ namespace EasyDI.Unity.LifetimeScopes
 	public abstract partial class LifetimeScope : MonoBehaviour
 	{
 		internal IObjectResolver Resolver => _resolver;
-		
+
 		protected virtual bool DoParentTransformToParentScope => true;
+
+		/// <summary>
+		/// The type of scope this scope is nested inside, or null when this is a root scope.
+		/// </summary>
+		/// <remarks>
+		/// Prefer deriving from <see cref="RootLifetimeScope"/> or <see cref="LifetimeScope{TParent}"/> instead of
+		/// overriding this. Overrides declared outside of this assembly must be declared <c>protected</c>.
+		/// </remarks>
+		protected internal virtual Type? ParentScopeType => null;
+
+		[SerializeField] private MonoInstaller? installer;
 
 		private IObjectResolver _resolver = null!;
 		private ILifecycleHookManager? _lifecycleHookManager;
@@ -38,9 +49,14 @@ namespace EasyDI.Unity.LifetimeScopes
 				registry = ObjectRegistry.CreateChild(parentScope._resolver);
 			}
 
-			if (EnqueuedInstallers.TryPeek(out var installer))
+			if (EnqueuedInstallers.TryPeek(out var enqueuedInstaller))
 			{
-				installer(registry);
+				enqueuedInstaller(registry);
+			}
+
+			if (installer != null)
+			{
+				installer.Install(registry);
 			}
 
 			Configure(registry);
@@ -71,27 +87,43 @@ namespace EasyDI.Unity.LifetimeScopes
 			_lifecycleHookManager?.Dispose();
 		}
 
-		protected abstract bool RequiresParentScope([NotNullWhen(true)] out Type? type);
-
 		protected bool IsMissingParentScope()
 		{
-			return RequiresParentScope(out _) && !TryFindParentScope(out _);
+			return ParentScopeType != null && !TryFindParentScope(out _);
 		}
-		
+
 		protected virtual void Configure(IObjectRegistry registry){}
+
+		/// <summary>
+		/// Reads <see cref="ParentScopeType"/> from code that doesn't derive from this class.
+		/// </summary>
+		internal Type? GetParentScopeType()
+		{
+			return ParentScopeType;
+		}
 
 		private bool TryFindParentScope([NotNullWhen(true)] out LifetimeScope? parentScope)
 		{
-			if (RequiresParentScope(out Type? parentScopeType))
+			var parentScopeType = ParentScopeType;
+
+			if (parentScopeType == null)
 			{
-				parentScope = FindObjectsByType(parentScopeType, FindObjectsInactive.Exclude, FindObjectsSortMode.None)
-					.Cast<LifetimeScope>()
-					.FirstOrDefault(ls => ls != this);
-				return parentScope != null;
+				parentScope = null;
+				return false;
 			}
 
-			parentScope = null;
-			return false;
+			if (!typeof(LifetimeScope).IsAssignableFrom(parentScopeType))
+			{
+				throw new InvalidOperationException(
+					$"'{name}' declares a parent scope type of {parentScopeType.FullName}, which does not derive " +
+					$"from {nameof(LifetimeScope)}.");
+			}
+
+			parentScope = FindObjectsByType(parentScopeType, FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+				.Cast<LifetimeScope>()
+				.FirstOrDefault(ls => ls != this);
+
+			return parentScope != null;
 		}
 	}
 }
