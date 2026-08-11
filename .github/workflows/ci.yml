@@ -31,6 +31,14 @@ jobs:
       - name: Rebuild and vendor
         run: ./scripts/vendor-unity-dlls.sh
 
+      # TEMPORARY: diagnosing a macOS/Linux byte difference. Remove before merge.
+      - name: Upload the Linux-built artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vendored-linux
+          path: EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/
+
       # The Unity package ships prebuilt DLLs, so a change to core that isn't re-vendored
       # leaves Unity consumers on stale code. The vendor build is byte-reproducible
       # (see the flags in the script), so any diff here means someone forgot to re-run it.
