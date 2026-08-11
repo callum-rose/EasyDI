@@ -33,17 +33,21 @@ BUILD_ROOT="$REPO_ROOT/artifacts/vendor"
 # ordinary `dotnet build` can't leave stale output that this script then skips rebuilding
 # (MSBuild's incremental check doesn't notice the changed properties above), and this
 # SourceLink-free build can't end up in a package pushed to nuget.org.
+#
+# Use --artifacts-path, not BaseOutputPath/BaseIntermediateOutputPath. Those are global
+# properties, so they propagate into ProjectReferences and every project in the graph ends
+# up sharing one obj/ — which breaks restore as soon as the referencing project and the
+# referenced one target different frameworks (NETSDK1005).
 build() {
     local project="$1"
     dotnet build "$REPO_ROOT/$project/$project.csproj" \
         --configuration Release \
         --nologo \
+        --artifacts-path "$BUILD_ROOT" \
         "-p:PathMap=$REPO_ROOT/=/_/" \
         -p:EnableSourceControlManagerQueries=false \
         -p:EnableSourceLink=false \
-        -p:GeneratePackageOnBuild=false \
-        "-p:BaseOutputPath=$BUILD_ROOT/$project/bin/" \
-        "-p:BaseIntermediateOutputPath=$BUILD_ROOT/$project/obj/"
+        -p:GeneratePackageOnBuild=false
 }
 
 echo "==> Building"
@@ -55,11 +59,11 @@ build EasyDI.Analyzers
 # netstandard2.1 is the TFM Unity consumes. The analyzer is netstandard2.0 because
 # Roslyn analyzers have to be.
 ARTEFACTS=(
-    "$BUILD_ROOT/EasyDI/bin/Release/netstandard2.1/EasyDI.dll"
-    "$BUILD_ROOT/EasyDI/bin/Release/netstandard2.1/EasyDI.pdb"
-    "$BUILD_ROOT/EasyDI.LifecycleHooks/bin/Release/netstandard2.1/EasyDI.LifecycleHooks.dll"
-    "$BUILD_ROOT/EasyDI.LifecycleHooks/bin/Release/netstandard2.1/EasyDI.LifecycleHooks.pdb"
-    "$BUILD_ROOT/EasyDI.Analyzers/bin/Release/netstandard2.0/EasyDI.Analyzers.dll"
+    "$BUILD_ROOT/bin/EasyDI/release_netstandard2.1/EasyDI.dll"
+    "$BUILD_ROOT/bin/EasyDI/release_netstandard2.1/EasyDI.pdb"
+    "$BUILD_ROOT/bin/EasyDI.LifecycleHooks/release_netstandard2.1/EasyDI.LifecycleHooks.dll"
+    "$BUILD_ROOT/bin/EasyDI.LifecycleHooks/release_netstandard2.1/EasyDI.LifecycleHooks.pdb"
+    "$BUILD_ROOT/bin/EasyDI.Analyzers/release/EasyDI.Analyzers.dll"
 )
 
 # Verify everything exists before copying anything, so a missing artefact can't leave
