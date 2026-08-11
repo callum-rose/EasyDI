@@ -1,0 +1,59 @@
+name: Publish to nuget.org
+
+# Manual only. Publishing is irreversible — a version can be unlisted but never deleted,
+# and never reused — so this deliberately doesn't fire on push or on tags.
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    # Requires a GitHub environment named "release". Give it required reviewers so a
+    # publish needs an explicit approval click. If you also enter "release" in the
+    # nuget.org policy's Environment field, a workflow run outside this environment
+    # can't get a key at all.
+    environment: release
+
+    permissions:
+      id-token: write # lets the job request the OIDC token trusted publishing exchanges
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      # GeneratePackageOnBuild is on, so a plain build produces every .nupkg and its
+      # .snupkg. `dotnet pack` does NOT work in this repo — it races the build and
+      # fails with NU5019/NU5026.
+      - name: Build packages
+        run: dotnet build -c Release
+
+      # Deliberately after the build: the temporary key lasts one hour, so it's issued
+      # as late as possible.
+      - name: Exchange OIDC token for a short-lived API key
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push EasyDI
+        run: >
+          dotnet nuget push EasyDI/bin/Release/*.nupkg
+          --source https://api.nuget.org/v3/index.json
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
+          --skip-duplicate
+
+      # Everything else depends on EasyDI, so it goes up first.
+      - name: Push the dependent packages
+        run: |
+          for project in EasyDI.Analyzers EasyDI.LifecycleHooks EasyDI.Configuration EasyDI.Godot.Core; do
+            dotnet nuget push "$project"/bin/Release/*.nupkg \
+              --source https://api.nuget.org/v3/index.json \
+              --api-key ${{ steps.login.outputs.NUGET_API_KEY }} \
+              --skip-duplicate
+          done

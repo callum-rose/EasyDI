@@ -2,7 +2,9 @@
 
 > Read EasyDI [README.md](../EasyDI/README.md) for information on how the DI framework works.
 
-> ⚠️ See [PLUGINS.md](../EasyDI.Unity/Assets/EasyDI.Unity/Plugins/PLUGINS.md) for important information about updating this package.
+> ⚠️ This assembly is vendored into the Unity package as a prebuilt DLL. If you change it, re-run
+> `./scripts/vendor-unity-dlls.sh` and commit the result — see
+> [VENDORED.md](../EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/VENDORED.md).
 
 ## Why
 
