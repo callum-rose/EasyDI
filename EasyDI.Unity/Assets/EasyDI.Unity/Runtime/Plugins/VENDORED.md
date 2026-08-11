@@ -25,8 +25,9 @@ from the repo root:
 ./scripts/vendor-unity-dlls.sh
 ```
 
-Commit the changed DLLs alongside the source change. CI rebuilds them and fails the build if the
-committed bytes don't match, so a source change without a re-vendor won't merge.
+Commit the changed DLLs alongside the source change. The script also records a hash of everything
+it built from in `scripts/vendored-sources.sha256`; CI regenerates that and fails on any diff, so
+a source change without a re-vendor won't merge.
 
 The `.meta` files are hand-authored and committed, and the script deliberately leaves them alone.
 Their GUIDs are referenced by every project that uses this package, and the `RoslynAnalyzer` label
