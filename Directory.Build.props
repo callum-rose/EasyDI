@@ -1,0 +1,35 @@
+<Project>
+
+    <!-- Metadata every package shares. Anything that identifies a single package — PackageId,
+         Version, Description, PackageTags — deliberately stays in its own csproj, because the
+         packages version independently of each other. -->
+    <PropertyGroup>
+        <Authors>Callum Rose</Authors>
+        <Copyright>Copyright (c) 2026 Callum Rose and contributors</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/callum-rose/EasyDI</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <!-- What lets a consumer pinned to a version get back to the source that built it.
+         SourceLink ships in the SDK from 8.0 onwards, so there is no PackageReference to add:
+         PublishRepositoryUrl is the switch that makes the build stamp the repository URL and
+         the exact commit SHA into the .nuspec and the PDBs. Without it, a package on nuget.org
+         carries no link back to this repo at all. -->
+    <PropertyGroup>
+        <RepositoryUrl>https://github.com/callum-rose/EasyDI</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+
+    <!-- Deterministic output, so a given commit always builds to the same bytes. CI only:
+         it rewrites the source paths baked into the PDB, which is what you want in a published
+         package and precisely what you don't want when debugging a local build. -->
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+</Project>
