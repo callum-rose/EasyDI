@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8451190073122714560}
   - component: {fileID: 164001880919798386}
+  - component: {fileID: 5813204977661032845}
   m_Layer: 0
   m_Name: Game Lifetime Scope
   m_TagString: Untagged
@@ -44,4 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71ebd1b498f48bdbfc65f4a5e9bc111, type: 3}
   m_Name:
   m_EditorClassIdentifier:
-  installer: {fileID: 0}
+  installer: {fileID: 5813204977661032845}
+--- !u!114 &5813204977661032845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297428531120844215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a0c8f27b1e4c9a9f3e5b6d81c07a52, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:

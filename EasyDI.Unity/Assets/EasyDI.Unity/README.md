@@ -9,7 +9,7 @@ This package extends EasyDI to support Unity projects.
 
 ## Example
 
-An example scene is included, so take a look there as it's the best way to see how it all fits together. It declares a three-layer chain — application, session, game — as example scripts. That's one project's structure, not the package's.
+An example scene is included, so take a look there as it's the best way to see how it all fits together. It declares a three-layer chain — application, session, game — as example scripts, each scope instantiating the next from the settings asset, with the scene's `SceneLifetimeScope` nested inside the game scope. Its presenter resolves the application scope's timer, the game scope's model and the scene scope's view, so you can watch resolution run the length of the chain. That's one project's structure, not the package's.
 
 ## What
 
