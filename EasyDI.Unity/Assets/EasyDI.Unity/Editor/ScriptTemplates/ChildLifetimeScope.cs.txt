@@ -1,0 +1,11 @@
+using EasyDI.Unity.LifetimeScopes;
+
+#ROOTNAMESPACEBEGIN#
+/// <summary>
+/// A scope nested inside another scope. Services registered in the parent scope are resolvable from this one.
+/// </summary>
+// TODO: replace TODO_ParentScopeType with the scope this one nests inside, then delete this comment.
+public sealed class #SCRIPTNAME# : LifetimeScope<TODO_ParentScopeType>
+{
+}
+#ROOTNAMESPACEEND#

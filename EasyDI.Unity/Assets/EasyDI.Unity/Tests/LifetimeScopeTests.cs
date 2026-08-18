@@ -11,24 +11,16 @@ namespace EasyDI.Unity.Tests
 {
 	public class LifetimeScopeTests
 	{
-		private sealed class TestLifetimeScope : LifetimeScope
+		private sealed class TestRootLifetimeScope : RootLifetimeScope
 		{
-			protected override bool RequiresParentScope(out Type type)
-			{
-				type = null!;
-				return false;
-			}
 		}
 
-		private sealed class TestChildLifetimeScope : LifetimeScope
+		private sealed class TestChildLifetimeScope : LifetimeScope<TestRootLifetimeScope>
 		{
-			protected override bool DoParentTransformToParentScope => true;
+		}
 
-			protected override bool RequiresParentScope(out Type? type)
-			{
-				type = typeof(TestLifetimeScope);
-				return true;
-			}
+		private sealed class TestGrandchildLifetimeScope : LifetimeScope<TestChildLifetimeScope>
+		{
 		}
 
 		private class TestLifecycleHook : IInitialisable, IDisposable
@@ -46,7 +38,7 @@ namespace EasyDI.Unity.Tests
 				DisposedCount++;
 			}
 		}
-		
+
 		[SetUp]
 		public void SetUp()
 		{
@@ -73,7 +65,7 @@ namespace EasyDI.Unity.Tests
 		{
 			using (LifetimeScope.EnqueueInstaller(registry => registry.RegisterLifecycleHook<TestLifecycleHook>()))
 			{
-				_ = new GameObject().AddComponent<TestLifetimeScope>();
+				_ = new GameObject().AddComponent<TestRootLifetimeScope>();
 			}
 
 			Assert.AreEqual(1, TestLifecycleHook.InitialisedCount);
@@ -82,11 +74,11 @@ namespace EasyDI.Unity.Tests
 		[Test]
 		public void LifecycleHook_IsDisposed_WhenLifetimeScopeDestroyed()
 		{
-			TestLifetimeScope lifetimeScope;
+			TestRootLifetimeScope lifetimeScope;
 
 			using (LifetimeScope.EnqueueInstaller(registry => registry.RegisterLifecycleHook<TestLifecycleHook>()))
 			{
-				lifetimeScope = new GameObject().AddComponent<TestLifetimeScope>();
+				lifetimeScope = new GameObject().AddComponent<TestRootLifetimeScope>();
 			}
 
 			Object.DestroyImmediate(lifetimeScope.gameObject);
@@ -97,11 +89,11 @@ namespace EasyDI.Unity.Tests
 		[Test]
 		public void ChildLifetimeScope_ParentTransform_IsSetToParentScope()
 		{
-			TestLifetimeScope lifetimeScope;
+			TestRootLifetimeScope lifetimeScope;
 
 			using (LifetimeScope.EnqueueInstaller(registry => registry.RegisterLifecycleHook<TestLifecycleHook>()))
 			{
-				lifetimeScope = new GameObject().AddComponent<TestLifetimeScope>();
+				lifetimeScope = new GameObject().AddComponent<TestRootLifetimeScope>();
 			}
 
 			TestChildLifetimeScope childLifetimeScope;
@@ -115,11 +107,22 @@ namespace EasyDI.Unity.Tests
 		}
 
 		[Test]
+		public void GrandchildLifetimeScope_ParentTransform_IsSetToItsOwnParentScope()
+		{
+			var rootLifetimeScope = new GameObject().AddComponent<TestRootLifetimeScope>();
+			var childLifetimeScope = new GameObject().AddComponent<TestChildLifetimeScope>();
+			var grandchildLifetimeScope = new GameObject().AddComponent<TestGrandchildLifetimeScope>();
+
+			Assert.That(childLifetimeScope.transform.parent, Is.SameAs(rootLifetimeScope.transform));
+			Assert.That(grandchildLifetimeScope.transform.parent, Is.SameAs(childLifetimeScope.transform));
+		}
+
+		[Test]
 		public void ChildLifetimeScope_CannotResolve_ParentLifecycleHook()
 		{
 			using (LifetimeScope.EnqueueInstaller(registry => registry.RegisterLifecycleHook<TestLifecycleHook>()))
 			{
-				_ = new GameObject().AddComponent<TestLifetimeScope>();
+				_ = new GameObject().AddComponent<TestRootLifetimeScope>();
 			}
 
 			var childLifetimeScope = new GameObject().AddComponent<TestChildLifetimeScope>();
@@ -132,7 +135,7 @@ namespace EasyDI.Unity.Tests
 		{
 			using (LifetimeScope.EnqueueInstaller(registry => registry.RegisterLifecycleHook<TestLifecycleHook>()))
 			{
-				_ = new GameObject().AddComponent<TestLifetimeScope>();
+				_ = new GameObject().AddComponent<TestRootLifetimeScope>();
 			}
 
 			Assert.AreEqual(0, TestLifecycleHook.DisposedCount);

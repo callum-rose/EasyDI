@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f627689b78c5490d815dcd9d0a6e402b, type: 3}
   m_Name: EasyDISettings
   m_EditorClassIdentifier: 
-  applicationLifetimeScope: {fileID: 1921382700502390001, guid: fecad8f4629f23747819bfef8769704b, type: 3}
-  sessionLifetimeScope: {fileID: 1294996627566525870, guid: 2274452e1e9b19d46aba0aa8fd1e5e17, type: 3}
-  gameLifetimeScope: {fileID: 164001880919798386, guid: 2a0eeebf0f398be48b5d5a42785a5408, type: 3}
+  rootLifetimeScope: {fileID: 1921382700502390001, guid: fecad8f4629f23747819bfef8769704b, type: 3}
+  scopePrefabs:
+  - {fileID: 1294996627566525870, guid: 2274452e1e9b19d46aba0aa8fd1e5e17, type: 3}
+  - {fileID: 164001880919798386, guid: 2a0eeebf0f398be48b5d5a42785a5408, type: 3}

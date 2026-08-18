@@ -1,0 +1,11 @@
+using EasyDI.Unity.LifetimeScopes;
+
+#ROOTNAMESPACEBEGIN#
+/// <summary>
+/// A scope at the top of a scope chain. Assign its prefab as the Root Lifetime Scope of the EasyDI settings asset to
+/// have it instantiated before the first scene loads.
+/// </summary>
+public sealed class #SCRIPTNAME# : RootLifetimeScope
+{
+}
+#ROOTNAMESPACEEND#

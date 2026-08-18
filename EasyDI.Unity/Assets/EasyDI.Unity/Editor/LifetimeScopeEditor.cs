@@ -13,72 +13,86 @@ namespace EasyDI.Unity.Editor
 		{
 			GUI.enabled = !EditorApplication.isPlaying;
 
-			var lifetimeScope = (LifetimeScope)target;
+			serializedObject.Update();
 
-			switch (lifetimeScope)
+			if (target is SceneLifetimeScope)
 			{
-				case ApplicationLifetimeScope:
-					EditorGUILayout.HelpBox("This is the root scope", MessageType.Info);
-					break;
-				
-				case SessionLifetimeScope:
-					EditorGUILayout.HelpBox("This parents to the " + nameof(ApplicationLifetimeScope),
-						MessageType.Info);
-					break;
-				
-				case GameLifetimeScope:
-					EditorGUILayout.HelpBox("This parents to the " + nameof(SessionLifetimeScope), MessageType.Info);
-					break;
-				
-				case SceneLifetimeScope:
-				{
-					var parentScopeProperty = serializedObject.FindProperty("parentScopeName");
+				DrawParentScopeName();
 
-					if (EditorApplication.isPlaying)
-					{
-						var parentScopeType = NameHelper.GetTypeByName(parentScopeProperty.stringValue);
-						var parentScope = FindAnyObjectByType(parentScopeType) as LifetimeScope;
-
-						if (parentScope != null)
-						{
-							GUI.enabled = false;
-							EditorGUILayout.ObjectField("Found Scope", parentScope, typeof(LifetimeScope), true);
-							GUI.enabled = !EditorApplication.isPlaying;
-
-							// Line
-							EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-						}
-					}
-
-					var scopeNames = NameHelper.ParentableLifetimeScopeNames.ToArray();
-					var currentIndex = Array.IndexOf(scopeNames, parentScopeProperty.stringValue);
-					var newIndex = EditorGUILayout.Popup("Parent Scope", currentIndex, scopeNames);
-
-					if (newIndex != currentIndex)
-					{
-						parentScopeProperty.stringValue = scopeNames[newIndex];
-					}
-					
-					EditorGUILayout.PropertyField(serializedObject.FindProperty("primaryInstaller"));
-
-					break;
-				}
-				
-				default:
-					EditorGUILayout.HelpBox("Unknown LifetimeScope type", MessageType.Warning);
-					break;
-			}
-			
-			if (lifetimeScope is SceneLifetimeScope)
-			{
-				EditorGUILayout.PropertyField(serializedObject.FindProperty("testingBackupInstaller"), true);
+				DrawPropertiesExcluding(serializedObject, "m_Script", SceneLifetimeScope.ParentScopeNamePropertyName);
 			}
 			else
 			{
-				EditorGUILayout.PropertyField(serializedObject.FindProperty("installer"), true);
+				DrawParentScopeType();
+
+				DrawPropertiesExcluding(serializedObject, "m_Script");
 			}
 
 			serializedObject.ApplyModifiedProperties();
+		}
+
+		private void DrawParentScopeType()
+		{
+			var parentScopeType = ((LifetimeScope)target).GetParentScopeType();
+
+			EditorGUILayout.HelpBox(
+				parentScopeType == null
+					? "This is a root scope, so it has no parent."
+					: $"This parents to the {ObjectNames.NicifyVariableName(parentScopeType.Name)}.",
+				MessageType.Info);
+		}
+
+		private void DrawParentScopeName()
+		{
+			var parentScopeNameProperty = serializedObject.FindProperty(SceneLifetimeScope.ParentScopeNamePropertyName);
+			var parentScopeName = parentScopeNameProperty.stringValue;
+			var scopeNames = NameHelper.ParentableLifetimeScopeNames.ToArray();
+
+			DrawFoundParentScope(parentScopeName);
+
+			var currentIndex = Array.IndexOf(scopeNames, parentScopeName);
+			var newIndex = EditorGUILayout.Popup("Parent Scope", currentIndex, scopeNames);
+
+			if (newIndex != currentIndex && newIndex >= 0)
+			{
+				parentScopeNameProperty.stringValue = scopeNames[newIndex];
+				parentScopeName = scopeNames[newIndex];
+				currentIndex = newIndex;
+			}
+
+			if (string.IsNullOrEmpty(parentScopeName))
+			{
+				EditorGUILayout.HelpBox(
+					"Choose the scope this one parents to. Without it, entering this scene will fail.",
+					MessageType.Warning);
+			}
+			else if (currentIndex < 0)
+			{
+				EditorGUILayout.HelpBox(
+					$"'{parentScopeName}' isn't the name of a scope in this project; it was probably renamed or " +
+					$"deleted. Choose one of: {string.Join(", ", scopeNames)}.",
+					MessageType.Error);
+			}
+		}
+
+		private void DrawFoundParentScope(string parentScopeName)
+		{
+			if (!EditorApplication.isPlaying || !NameHelper.TryGetTypeByName(parentScopeName, out var parentScopeType))
+			{
+				return;
+			}
+
+			if (FindAnyObjectByType(parentScopeType) is not LifetimeScope parentScope)
+			{
+				return;
+			}
+
+			GUI.enabled = false;
+			EditorGUILayout.ObjectField("Found Scope", parentScope, typeof(LifetimeScope), true);
+			GUI.enabled = !EditorApplication.isPlaying;
+
+			// Line
+			EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 		}
 	}
 }
