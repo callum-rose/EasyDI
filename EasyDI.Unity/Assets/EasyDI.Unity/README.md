@@ -7,6 +7,22 @@ This package extends EasyDI to support Unity projects.
 > ⚠️ This package is self-contained — the EasyDI DLLs it needs are vendored in
 > [`Runtime/Plugins`](Runtime/Plugins/VENDORED.md), so there's nothing else to install.
 
+## Installing
+
+In Unity, _Window ▸ Package Manager ▸ + ▸ Install package from git URL_, and give it:
+
+```
+https://github.com/callum-rose/EasyDI.git?path=EasyDI.Unity/Assets/EasyDI.Unity#EasyDI.Unity-v1.0.0
+```
+
+Both halves of that URL matter. `?path=` is there because the package sits in a subfolder rather
+than at the repo root, and needs Unity 2019.3.4f1 or newer. The `#` fragment pins a release: drop
+it and you track the default branch instead, so the same URL resolves to different code over time.
+
+To upgrade, edit the tag in the URL. UPM has no version ranges for git dependencies — every
+install is a fixed snapshot, and [the tags](https://github.com/callum-rose/EasyDI/tags) named
+`EasyDI.Unity-v*` are the releases of this package.
+
 ## Example
 
 An example scene is included, so take a look there as it's the best way to see how it all fits together.
