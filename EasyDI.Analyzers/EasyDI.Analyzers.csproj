@@ -9,16 +9,20 @@
         <EmbedRuntimeContracts>true</EmbedRuntimeContracts>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
-        <!-- NuGet Package Properties -->
+        <!-- Package identity. Shared metadata — authors, licence, repository — lives in
+             Directory.Build.props. -->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <DevelopmentDependency>true</DevelopmentDependency>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
         <PackageId>CallumRose.EasyDI.Analyzers</PackageId>
         <Version>1.0.5</Version>
-        <Authors>Callum Rose</Authors>
         <Description>Roslyn analyzers that catch EasyDI registration and lifecycle mistakes at compile time</Description>
         <PackageTags>dependency-injection;container;ioc;di;analyzers;roslyn</PackageTags>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+        <!-- Overrides the solution-wide default. IncludeBuildOutput is off above — the DLL is
+             packed by hand into analyzers/dotnet/cs — so there is no lib/ for a symbols package
+             to describe, and asking for one produces an empty .snupkg. -->
+        <IncludeSymbols>false</IncludeSymbols>
     </PropertyGroup>
 
     <ItemGroup>
@@ -30,6 +34,10 @@
     <!-- Include the analyzer DLL in the NuGet package -->
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

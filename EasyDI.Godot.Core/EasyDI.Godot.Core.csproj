@@ -6,16 +6,18 @@
         <LangVersion>12</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>EasyDI.Godot</RootNamespace>
-        <PackageId>CallumRose.EasyDI.Godot.Core</PackageId>
-        <Title>EasyDI.Godot.Core</Title>
-        <Authors>Alex Williams</Authors>
-        <Description>Contains the core classes to get EasyDI LifetimeScopes working in Godot</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <Version>1.0.6</Version>
+
+        <!-- Package identity. Shared metadata — licence, repository, symbols — lives in
+             Directory.Build.props. -->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>CallumRose.EasyDI.Godot.Core</PackageId>
+        <Version>1.0.6</Version>
+        <Title>EasyDI.Godot.Core</Title>
+        <Description>Contains the core classes to get EasyDI LifetimeScopes working in Godot</Description>
+        <PackageTags>dependency-injection;container;ioc;di;godot</PackageTags>
+
+        <!-- Overrides the solution-wide default, which is Callum Rose. -->
+        <Authors>Alex Williams</Authors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,6 +31,7 @@
 
     <ItemGroup>
         <None Include="ScriptTemplates\**" Pack="true" PackagePath="ScriptTemplates\"/>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

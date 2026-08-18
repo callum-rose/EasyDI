@@ -18,10 +18,15 @@ jobs:
 
     permissions:
       id-token: write # lets the job request the OIDC token trusted publishing exchanges
-      contents: read
+      contents: write # lets the final step push the release tags
 
     steps:
+      # Full history, for the tag step at the end. The default shallow fetch brings down no
+      # tags, so tag-release.sh would see every version as untagged and then fail pushing one
+      # that already exists — turning a re-run after a partial release into an error.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-dotnet@v4
         with:
@@ -57,3 +62,12 @@ jobs:
               --api-key ${{ steps.login.outputs.NUGET_API_KEY }} \
               --skip-duplicate
           done
+
+      # Last, and only if every push succeeded: a tag is a claim that this commit is what's
+      # on nuget.org, so it must not exist for a release that failed halfway. Versions already
+      # tagged are left alone, which is what makes a re-run after a partial failure safe.
+      - name: Tag the released versions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ./scripts/tag-release.sh --push
