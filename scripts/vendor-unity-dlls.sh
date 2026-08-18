@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+#
+# Builds the .NET libraries that the Unity package ships and copies the resulting
+# assemblies into the package's vendored Plugins folder.
+#
+# The Unity package is self-contained: it carries these DLLs directly rather than
+# restoring them through NuGet. Run this after any change to EasyDI, EasyDI.LifecycleHooks
+# or EasyDI.Analyzers, and commit the result.
+#
+# The .meta files next to the DLLs are hand-authored and committed. This script never
+# touches them — their GUIDs must stay stable or every Unity project referencing the
+# package breaks.
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DEST="$REPO_ROOT/EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins"
+BUILD_ROOT="$REPO_ROOT/artifacts/vendor"
+MANIFEST="$REPO_ROOT/scripts/vendored-sources.sha256"
+
+# These flags keep the output stable, so the committed DLLs only change when the code does
+# rather than churning on every commit and every machine:
+#
+#   PathMap                            rewrites the source paths embedded in the PDB, so the
+#                                      bytes don't depend on where the repo is checked out.
+#   EnableSourceControlManagerQueries  together, these stop the SDK asking git for the repo
+#   EnableSourceLink                   root and commit SHA and baking both into the PDB —
+#                                      which would make every commit produce a new binary.
+#
+# SourceLink still applies to the nuget.org packages, which is where it earns its keep. These
+# DLLs sit in the same repo as their source, so there's nothing for it to buy here.
+#
+# The build is also kept out of the projects' own bin/ and obj/. That cuts both ways: an
+# ordinary `dotnet build` can't leave stale output that this script then skips rebuilding
+# (MSBuild's incremental check doesn't notice the changed properties above), and this
+# SourceLink-free build can't end up in a package pushed to nuget.org.
+#
+# Use --artifacts-path, not BaseOutputPath/BaseIntermediateOutputPath. Those are global
+# properties, so they propagate into ProjectReferences and every project in the graph ends
+# up sharing one obj/ — which breaks restore as soon as the referencing project and the
+# referenced one target different frameworks (NETSDK1005).
+build() {
+    local project="$1"
+    dotnet build "$REPO_ROOT/$project/$project.csproj" \
+        --configuration Release \
+        --nologo \
+        --artifacts-path "$BUILD_ROOT" \
+        "-p:PathMap=$REPO_ROOT/=/_/" \
+        -p:EnableSourceControlManagerQueries=false \
+        -p:EnableSourceLink=false \
+        -p:GeneratePackageOnBuild=false
+}
+
+echo "==> Building"
+rm -rf "$BUILD_ROOT"
+build EasyDI
+build EasyDI.LifecycleHooks
+build EasyDI.Analyzers
+
+# netstandard2.1 is the TFM Unity consumes. The analyzer is netstandard2.0 because
+# Roslyn analyzers have to be.
+ARTEFACTS=(
+    "$BUILD_ROOT/bin/EasyDI/release_netstandard2.1/EasyDI.dll"
+    "$BUILD_ROOT/bin/EasyDI/release_netstandard2.1/EasyDI.pdb"
+    "$BUILD_ROOT/bin/EasyDI.LifecycleHooks/release_netstandard2.1/EasyDI.LifecycleHooks.dll"
+    "$BUILD_ROOT/bin/EasyDI.LifecycleHooks/release_netstandard2.1/EasyDI.LifecycleHooks.pdb"
+    "$BUILD_ROOT/bin/EasyDI.Analyzers/release/EasyDI.Analyzers.dll"
+)
+
+# Verify everything exists before copying anything, so a missing artefact can't leave
+# the package half-updated.
+for artefact in "${ARTEFACTS[@]}"; do
+    if [[ ! -f "$artefact" ]]; then
+        echo "error: expected build output not found: $artefact" >&2
+        exit 1
+    fi
+done
+
+echo "==> Vendoring into ${DEST#"$REPO_ROOT/"}"
+mkdir -p "$DEST"
+for artefact in "${ARTEFACTS[@]}"; do
+    cp "$artefact" "$DEST/"
+    echo "    $(basename "$artefact")"
+done
+
+# Record what the DLLs were built from. CI regenerates this and fails on any diff, which
+# is how "changed core, forgot to re-vendor" gets caught.
+#
+# This exists instead of comparing the DLL bytes directly. Two builds of the same source
+# only agree byte-for-byte if they used the same compiler *build* — not just the same SDK
+# version — and that doesn't hold in practice: Homebrew's dotnet is a community
+# source-build that reports the same 10.0.301 as Microsoft's while embedding a different
+# Roslyn version stamp. Hashing the inputs sidesteps the toolchain entirely.
+# Must be a command, not a shell function — xargs below can only invoke a real binary.
+# macOS also ships /sbin/sha256, whose output format differs from coreutils, so this
+# deliberately picks between sha256sum and shasum only.
+if command -v sha256sum >/dev/null 2>&1; then
+    SHA256=(sha256sum)
+elif command -v shasum >/dev/null 2>&1; then
+    SHA256=(shasum -a 256)
+else
+    echo "error: neither sha256sum nor shasum found" >&2
+    exit 1
+fi
+
+echo "==> Recording source hashes in ${MANIFEST#"$REPO_ROOT/"}"
+(
+    cd "$REPO_ROOT"
+    echo "# Inputs to the vendored DLLs in EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins."
+    echo "# Generated by scripts/vendor-unity-dlls.sh — do not edit by hand."
+    echo "#"
+    # Which nuget.org release each vendored DLL corresponds to. A Unity consumer installs by
+    # git URL, so they never see a NuGet version — this is the only place that says which one
+    # they're actually running. Recorded here rather than in prose because CI regenerates this
+    # file and fails on any diff, so unlike a hand-written table it cannot go stale.
+    echo "# Vendored from:"
+    for project in EasyDI EasyDI.LifecycleHooks EasyDI.Analyzers; do
+        version="$(dotnet msbuild "$project/$project.csproj" -getProperty:PackageVersion -nologo)"
+        echo "#   $project ${version//[$'\t\r\n ']/}"
+    done
+    echo "#"
+    find EasyDI EasyDI.LifecycleHooks EasyDI.Analyzers \
+        -type d \( -name bin -o -name obj \) -prune -o \
+        -type f \( -name '*.cs' -o -name '*.csproj' \) -print |
+        LC_ALL=C sort |
+        xargs "${SHA256[@]}"
+    # The SDK pin, this script's own build flags, and the solution-wide properties all change
+    # the output too — Directory.Build.props sets assembly metadata that lands in the DLLs.
+    "${SHA256[@]}" global.json scripts/vendor-unity-dlls.sh Directory.Build.props
+) > "$MANIFEST"
+
+echo "==> Done"

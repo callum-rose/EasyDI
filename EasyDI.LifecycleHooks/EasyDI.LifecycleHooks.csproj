@@ -6,20 +6,13 @@
         <RootNamespace>EasyDI.LifecycleHooks</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-        <!-- Basic Package Info -->
-        <PackageId>EasyDI.LifecycleHooks</PackageId>
+        <!-- Package identity. Shared metadata — authors, licence, repository, symbols —
+             lives in Directory.Build.props. -->
+        <PackageId>CallumRose.EasyDI.LifecycleHooks</PackageId>
         <PackageVersion>1.0.4</PackageVersion>
-        <Authors>Callum Rose</Authors>
         <Description>Frameworks for setting up application lifecycle hooks using EasyDI</Description>
-
-        <!-- Optional but recommended -->
         <PackageTags>dependency-injection;container;ioc;di;lifecycle;hooks</PackageTags>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
 
-        <!-- Include symbols for debugging -->
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <LangVersion>13</LangVersion>
         <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>

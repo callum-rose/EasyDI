@@ -2,7 +2,8 @@
 
 EasyDI is a minimal and portable dependency injection framework designed for our Unity, Godot and C# projects.
 
-> ⚠️ See [PLUGINS.md](EasyDI.Unity/Assets/EasyDI.Unity/Plugins/PLUGINS.md) for important information about updating this package.
+> ⚠️ The Unity package ships prebuilt DLLs. If you change core, re-run `./scripts/vendor-unity-dlls.sh`
+> and commit the result — see [VENDORED.md](EasyDI.Unity/Assets/EasyDI.Unity/Runtime/Plugins/VENDORED.md).
 
 ## Why
 
@@ -31,6 +32,46 @@ So we decided to make our own. EasyDI has a similar API to [VContainer](https://
 - Support for multiple resolvers in a hierarchy
 - Can resolve lists of services
 - Open generics
+
+## Installing
+
+| Package                                                                                        | Covers                                       |
+|------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [`CallumRose.EasyDI`](https://www.nuget.org/packages/CallumRose.EasyDI)                           | The container itself                         |
+| [`CallumRose.EasyDI.Analyzers`](https://www.nuget.org/packages/CallumRose.EasyDI.Analyzers)       | Compile-time checks on your registrations    |
+| [`CallumRose.EasyDI.LifecycleHooks`](https://www.nuget.org/packages/CallumRose.EasyDI.LifecycleHooks) | Application startup and shutdown hooks   |
+| [`CallumRose.EasyDI.Configuration`](https://www.nuget.org/packages/CallumRose.EasyDI.Configuration) | `IOptions<T>` binding from configuration   |
+| [`CallumRose.EasyDI.Godot.Core`](https://www.nuget.org/packages/CallumRose.EasyDI.Godot.Core)     | Godot `LifetimeScope` nodes                  |
+
+These version independently of each other — a fix to the Godot integration doesn't move the
+container's version — so read each package's own version off nuget.org rather than assuming they
+march together.
+
+### Pinning a version
+
+`Version="1.1.0"` is a *minimum*, not a pin. NuGet reads it as "1.1.0, or the nearest higher
+version if that's what's available", so a restore can quietly move you to 1.2.0. Brackets are what
+lock it:
+
+```xml
+<PackageReference Include="CallumRose.EasyDI" Version="[1.1.0]" />
+```
+
+Every published version is tagged here as `<project>-v<version>` — `EasyDI-v1.1.0`,
+`EasyDI.Analyzers-v1.0.5` — and each package embeds the commit it was built from, so a pinned
+version leads back to the source that produced it.
+
+### Unity
+
+The Unity package is installed by git URL, which means the version you get is whatever the branch
+points at today. Put a tag on the URL to pin it:
+
+```
+https://github.com/callum-rose/EasyDI.git?path=EasyDI.Unity/Assets/EasyDI.Unity#EasyDI-v1.1.0
+```
+
+It ships prebuilt DLLs rather than restoring them from NuGet — which release they correspond to is
+recorded in [`scripts/vendored-sources.sha256`](scripts/vendored-sources.sha256).
 
 ## How
 

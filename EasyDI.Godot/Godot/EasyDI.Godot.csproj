@@ -5,10 +5,10 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="EasyDI" Version="1.0.0" />
-    <PackageReference Include="EasyDI.LifecycleHooks" Version="1.0.0" />
-  </ItemGroup>
+  <!-- No PackageReference to EasyDI or EasyDI.LifecycleHooks here. This is the sample project
+       for the addon, so it consumes the sources in this repo through EasyDI.Godot.Core below,
+       which references both transitively. Restoring them from nuget.org as well would test a
+       published release rather than the working tree, and ship two copies of EasyDI.dll. -->
   <ItemGroup>
     <Content Include="addons\EasyDI.Godot\plugin.cfg" />
     <Content Include="addons\EasyDI.Godot\README.md" />
